@@ -13,7 +13,6 @@ kotlin {
     jvm {
         withJava()
     }
-    linuxX64 { }
 
     sourceSets {
         val coroutinesVersion: String by project
@@ -51,17 +50,6 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-            }
-        }
-
-        val linuxX64Main by getting {
-            dependencies {
-                implementation(kotlin("stdlib"))
-            }
-        }
-        val linuxX64Test by getting {
-            dependencies {
-                implementation(kotlin("test"))
             }
         }
     }
