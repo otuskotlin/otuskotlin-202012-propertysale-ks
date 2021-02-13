@@ -6,7 +6,6 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
-
     val slf4jVersion: String by project
     val logbackEncoderVersion: String by project
 

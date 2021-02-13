@@ -1,7 +1,8 @@
 rootProject.name = "otuskotlin-202012-propertysale-ks"
 
 include(
-    "ok-propertysale-be-common"
+    "ok-propertysale-be-common",
+    "ok-propertysale-mp-common"
 )
 
 pluginManagement {
@@ -20,4 +21,3 @@ pluginManagement {
         jcenter()
     }
 }
-include("ok-propertysale-mp-common")
