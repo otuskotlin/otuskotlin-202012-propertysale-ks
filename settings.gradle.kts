@@ -1,5 +1,3 @@
-rootProject.name = "otuskotlin-202012-propertysale-ks"
-
 pluginManagement {
     plugins {
         val kotlinVersion: String by settings
@@ -9,6 +7,8 @@ pluginManagement {
         kotlin("js") version kotlinVersion apply false
     }
 }
+
+rootProject.name = "otuskotlin-202012-propertysale-ks"
 
 include(
     "ok-propertysale-be-common",
