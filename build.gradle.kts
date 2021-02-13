@@ -9,8 +9,8 @@ plugins {
 
 allprojects {
     group = "ru.otus.otuskotlin.propertysale"
-    version = "0.0.1"
     description = "OTUS Kotlin course project"
+    version = "0.0.1"
 
     repositories {
         mavenLocal()
