@@ -7,11 +7,11 @@ plugins {
     idea
 }
 
-allprojects {
-    group = "ru.otus.otuskotlin.propertysale"
-    description = "OTUS Kotlin course project"
-    version = "0.0.1"
+group = "ru.otus.otuskotlin.propertysale"
+description = "OTUS Kotlin course project"
+version = "0.0.1"
 
+allprojects {
     repositories {
         mavenLocal()
         gradlePluginPortal()
