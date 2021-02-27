@@ -15,7 +15,7 @@ include(
     "ok-propertysale-be-common",
     "ok-propertysale-be-transport",
     "ok-propertysale-fe-common",
-    "ok-propertysale-fe-transport",
     "ok-propertysale-mp-common",
-    "ok-propertysale-mp-transport"
+    "ok-propertysale-mp-mappers-ps",
+    "ok-propertysale-mp-transport-ps"
 )
