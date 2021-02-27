@@ -9,7 +9,7 @@ dependencies {
     val coroutinesVersion: String by project
 
     implementation(project(":ok-propertysale-be-common"))
-    implementation(project(":ok-propertysale-mp-transport"))
+    implementation(project(":ok-propertysale-mp-transport-ps"))
 
     implementation(kotlin("stdlib"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
