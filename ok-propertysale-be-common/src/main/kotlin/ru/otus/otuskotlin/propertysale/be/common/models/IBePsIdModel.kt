@@ -1,5 +1,5 @@
 package ru.otus.otuskotlin.propertysale.be.common.models
 
-interface IPropertySaleIdModel {
+interface IBePsIdModel {
     val id: String
 }

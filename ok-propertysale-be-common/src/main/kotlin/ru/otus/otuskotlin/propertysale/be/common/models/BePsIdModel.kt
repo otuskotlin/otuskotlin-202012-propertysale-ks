@@ -1,9 +1,9 @@
 package ru.otus.otuskotlin.propertysale.be.common.models
 
-inline class PropertySaleDetailIdModel(
+inline class BePsIdModel(
     override val id: String
-) : IPropertySaleIdModel {
+) : IBePsIdModel {
     companion object {
-        val NONE = PropertySaleDetailIdModel("")
+        val NONE = BePsIdModel("")
     }
 }

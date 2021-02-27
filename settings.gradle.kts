@@ -13,9 +13,8 @@ rootProject.name = "otuskotlin-202012-propertysale-ks"
 
 include(
     "ok-propertysale-be-common",
-    "ok-propertysale-be-transport",
+    "ok-propertysale-be-mappers-ps",
     "ok-propertysale-fe-common",
     "ok-propertysale-mp-common",
-    "ok-propertysale-mp-mappers-ps",
     "ok-propertysale-mp-transport-ps"
 )

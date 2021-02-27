@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.propertysale.be.common.models
 
-data class PropertySaleUnitTypeModel(
-    val id: PropertySaleUnitTypeIdModel = PropertySaleUnitTypeIdModel.NONE,
+data class BePsUnitTypeModel(
+    val id: BePsUnitTypeIdModel = BePsUnitTypeIdModel.NONE,
     val name: String = "",
     val description: String = "",
     val synonyms: MutableSet<String> = mutableSetOf(),
@@ -10,6 +10,6 @@ data class PropertySaleUnitTypeModel(
     val isBase: Boolean = false,
 ) {
     companion object {
-        val NONE = PropertySaleUnitTypeModel()
+        val NONE = BePsUnitTypeModel()
     }
 }
