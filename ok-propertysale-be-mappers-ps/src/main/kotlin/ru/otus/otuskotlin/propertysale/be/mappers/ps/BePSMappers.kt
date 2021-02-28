@@ -13,17 +13,20 @@ import ru.otus.otuskotlin.propertysale.be.common.models.BePsUnitTypeIdModel
 import ru.otus.otuskotlin.propertysale.be.common.models.BePsUnitTypeModel
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.IPsRequest
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.crud.PsRequestCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.crud.PsRequestDelete
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.crud.PsRequestRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.crud.PsRequestUpdate
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.PsActionDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.PsDetailDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.PsDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.PsParamDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.PsUnitTypeDto
 
 fun BePsContext.setQuery(request: IPsRequest) =
     when (request) {
-        is PsRequestRead -> this.setQuery(request)
+        is PsRequestRead -> setQuery(request)
         is PsRequestCreate -> setQuery(request)
+        is PsRequestUpdate -> setQuery(request)
+        is PsRequestDelete -> setQuery(request)
         else -> null
     }
 
@@ -41,6 +44,23 @@ fun BePsContext.setQuery(request: PsRequestCreate) {
             actions = data.actions?.map { it.toInternal() }?.toMutableSet() ?: mutableSetOf()
         )
     }
+}
+
+fun BePsContext.setQuery(request: PsRequestUpdate) {
+    request.updateData?.let { data ->
+        this.request = BePsModel(
+            id = data.id?.let { BePsIdModel(it) } ?: BePsIdModel.NONE,
+            title = data.title ?: "",
+            description = data.description ?: "",
+            tags = data.tags?.toMutableSet() ?: mutableSetOf(),
+            details = data.details?.map { it.toInternal() }?.toMutableSet() ?: mutableSetOf(),
+            actions = data.actions?.map { it.toInternal() }?.toMutableSet() ?: mutableSetOf()
+        )
+    }
+}
+
+fun BePsContext.setQuery(request: PsRequestDelete) {
+    this.requestId = request.id?.let { BePsIdModel(it) } ?: BePsIdModel.NONE
 }
 
 private fun PsActionDto.toInternal() = BePsActionModel(
@@ -70,12 +90,4 @@ fun PsParamDto.toInternal() = BePsParamModel(
     description = description ?: "",
     priority = priority ?: Double.MIN_VALUE,
     units = units?.map { it.toInternal() }?.toMutableSet() ?: mutableSetOf()
-)
-
-fun PsDto.toInternal() = BePsModel(
-    id = id?.let { BePsIdModel(it) } ?: BePsIdModel.NONE,
-    title = title ?: "",
-    description = description ?: "",
-    tags = tags?.toMutableSet() ?: mutableSetOf(),
-    details = details?.map { it.toInternal() }?.toMutableSet() ?: mutableSetOf(),
 )

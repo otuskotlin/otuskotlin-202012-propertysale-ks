@@ -15,7 +15,7 @@ data class PsRequestUpdate(
     override val debug: Debug? = null,
     override val onResponse: String? = null,
     override val startTime: String? = null,
-    val updateData: PsUpdateDto? = null,
+    val updateData: PsUpdateDto? = null
 ) : IPsRequest, PsMessage() {
 
     @Serializable

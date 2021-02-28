@@ -24,7 +24,7 @@ internal class BePsMappersTest {
 
     @Test
     fun requestCreateMappingTest() {
-        val requestDemand: IPsRequest = PsRequestCreate(
+        val request: IPsRequest = PsRequestCreate(
             createData = PsCreateDto(
                 title = "test-title",
                 description = "test-description",
@@ -34,7 +34,7 @@ internal class BePsMappersTest {
 
         val context = BePsContext()
 
-        context.setQuery(requestDemand)
+        context.setQuery(request)
 
         assertEquals("test-title", context.request.title)
         assertEquals(2, context.request.tags.size)
