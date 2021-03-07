@@ -1,5 +1,8 @@
 plugins {
+    application
     kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("plugin.allopen")
     kotlin("plugin.serialization")
     id("io.spring.dependency-management")
     id("org.springframework.boot")
@@ -7,6 +10,10 @@ plugins {
 
 group = rootProject.group
 version = rootProject.group
+
+application {
+    mainClass.set("ru.otus.otuskotlin.propertysale.be.app.spring.PsBeAppSpringKt")
+}
 
 val javaVersion: String by project
 
@@ -23,7 +30,9 @@ dependencies {
 
     implementation(kotlin("stdlib"))
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-jetty")
 
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
     testImplementation(kotlin("test-junit5"))

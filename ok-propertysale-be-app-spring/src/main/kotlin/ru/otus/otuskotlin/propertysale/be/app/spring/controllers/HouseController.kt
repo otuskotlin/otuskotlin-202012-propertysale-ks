@@ -1,79 +1,85 @@
 package ru.otus.otuskotlin.propertysale.be.app.spring.controllers
 
-import org.springframework.web.servlet.function.ServerRequest
-import org.springframework.web.servlet.function.ServerResponse
-import org.springframework.web.servlet.function.ServerResponse.ok
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ErrorDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechParamDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ErrorDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.PsHouseDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseUpdate
 import java.time.Instant
 
+@RestController
+@RequestMapping("/house")
 class HouseController {
-    fun list(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalList::class.java)
-        val response = MpResponseProposalList(
-            proposals = listOf(
-                mockRead("p-001"),
-                mockRead("p-002"),
-                mockRead("p-003"),
-                mockRead("p-004"),
-                mockRead("p-005"),
-                mockRead("p-006"),
+
+    @PostMapping("/list")
+    fun list() =
+        PsResponseHouseList(
+            houses = listOf(
+                mockRead("house-id-001"),
+                mockRead("house-id-002"),
+                mockRead("house-id-003"),
+                mockRead("house-id-004"),
+                mockRead("house-id-005"),
+                mockRead("house-id-006"),
+                mockRead("house-id-007")
             )
         )
-        return ok().body(response)
-    }
 
-    fun create(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalCreate::class.java)
-        val response = MpResponseProposalCreate(
-            responseId = "123",
+    @PostMapping("/create")
+    fun create(@RequestBody query: PsRequestHouseCreate) =
+        PsResponseHouseCreate(
+            responseId = "msg-id-123",
             onRequest = query.requestId,
             endTime = Instant.now().toString(),
             status = ResponseStatusDto.SUCCESS,
-            proposal = mockUpdate(
-                id = "p-123",
-                avatar = query.createData?.avatar,
-                title = query.createData?.title,
-                description = query.createData?.description
+            house = mockUpdate(
+                id = "house-id-created",
+                name = query.createData?.name,
+                description = query.createData?.description,
+                area = query.createData?.area
             )
         )
-        return ok().body(response)
-    }
 
-    fun read(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalRead::class.java)
-        val response = MpResponseProposalRead(
-            responseId = "123",
+    @PostMapping("/read")
+    fun read(@RequestBody query: PsRequestHouseRead) =
+        PsResponseHouseRead(
+            responseId = "msg-id-123",
             onRequest = query.requestId,
             endTime = Instant.now().toString(),
             status = ResponseStatusDto.SUCCESS,
-            proposal = mockRead(query.proposalId ?: "")
+            house = mockRead(query.houseId ?: "")
         )
-        return ok().body(response)
-    }
 
-    fun update(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalUpdate::class.java)
-        val id = query.updateData?.id
-        val response = if (id != null)
-            MpResponseProposalUpdate(
-                responseId = "123",
+    @PostMapping("/update")
+    fun update(@RequestBody query: PsRequestHouseUpdate) =
+        if (query.updateData?.id != null)
+            PsResponseHouseUpdate(
+                responseId = "msg-id-123",
                 onRequest = query.requestId,
                 endTime = Instant.now().toString(),
                 status = ResponseStatusDto.SUCCESS,
-                proposal = mockUpdate(
-                    id = id,
-                    avatar = query.updateData?.avatar,
-                    title = query.updateData?.title,
-                    description = query.updateData?.description
+                house = mockUpdate(
+                    id = query.updateData?.id!!,
+                    name = query.updateData?.name,
+                    description = query.updateData?.description,
+                    area = query.updateData?.area
                 )
             )
         else
-            MpResponseProposalUpdate(
-                responseId = "123",
+            PsResponseHouseUpdate(
+                responseId = "msg-id-123",
                 onRequest = query.requestId,
                 endTime = Instant.now().toString(),
                 status = ResponseStatusDto.SUCCESS,
@@ -83,76 +89,41 @@ class HouseController {
                         group = "validation",
                         field = "id",
                         level = ErrorDto.Level.ERROR,
-                        message = "id of the proposal to be updated cannot be empty"
+                        message = "id of the demand to be updated cannot be empty"
                     )
                 )
             )
-        return ok().body(response)
-    }
 
-    fun delete(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalDelete::class.java)
-        return ok().body(
-            MpResponseProposalDelete(
-                responseId = "123",
-                onRequest = query.requestId,
-                endTime = Instant.now().toString(),
-                status = ResponseStatusDto.SUCCESS,
-                proposal = mockRead(query.proposalId ?: ""),
-                deleted = true
-            )
+    @PostMapping("/delete")
+    fun delete(@RequestBody query: PsRequestHouseDelete) =
+        PsResponseHouseDelete(
+            responseId = "msg-id-123",
+            onRequest = query.requestId,
+            endTime = Instant.now().toString(),
+            status = ResponseStatusDto.SUCCESS,
+            house = mockRead(query.houseId ?: ""),
+            deleted = true
         )
-    }
-
-    fun offers(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalOffersList::class.java)
-        return ok().body(
-            MpResponseProposalOffersList(
-                responseId = "123",
-                onRequest = query.requestId,
-                endTime = Instant.now().toString(),
-                status = ResponseStatusDto.SUCCESS,
-                proposalDemands = listOf(
-                    FlatController.mockRead("d-001"),
-                    FlatController.mockRead("d-002"),
-                    FlatController.mockRead("d-003"),
-                    FlatController.mockRead("d-004"),
-                )
-            )
-        )
-    }
 
     companion object {
         fun mockUpdate(
             id: String,
-            avatar: String?,
-            title: String?,
+            name: String?,
             description: String?,
-        ) = MpProposalDto(
+            area: Double?,
+        ) = PsHouseDto(
             id = id,
-            avatar = avatar,
-            title = title,
+            name = name,
             description = description,
-            tagIds = setOf("t-001", "t-002"),
-            techDets = setOf(
-                TechDetsDto(
-                    id = "tp-001",
-                    param = TechParamDto(
-                        id = "tp-001",
-                        name = "Tech Param 001",
-                        description = "Tech Param Description 001",
-                        priority = 0.0,
-                        units = setOf(RoomController.mockRead("ut-001", "kg")),
-                    )
-                )
-            )
+            area = area,
+            actions = setOf(PsActionDto("action-1"))
         )
 
         fun mockRead(id: String) = mockUpdate(
             id = id,
-            avatar = "icon://menu",
-            title = "Proposal $id",
-            description = "Description of proposal $id"
+            name = "House $id",
+            description = "Description of house $id",
+            area = 150.0
         )
     }
 }

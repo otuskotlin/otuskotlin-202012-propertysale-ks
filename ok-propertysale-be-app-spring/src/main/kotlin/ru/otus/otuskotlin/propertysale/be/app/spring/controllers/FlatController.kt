@@ -1,15 +1,15 @@
 package ru.otus.otuskotlin.propertysale.be.app.spring.controllers
 
-import org.springframework.web.servlet.function.ServerRequest
-import org.springframework.web.servlet.function.ServerResponse
-import org.springframework.web.servlet.function.ServerResponse.ok
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ErrorDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.PsFlatDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatCreate
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatList
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatRead
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatUpdate
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatCreate
@@ -19,10 +19,13 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponse
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatUpdate
 import java.time.Instant
 
+@RestController
+@RequestMapping("/flat")
 class FlatController {
-    fun list(request: ServerRequest): ServerResponse {
-        val query = request.body(PsRequestFlatList::class.java)
-        val response = PsResponseFlatList(
+
+    @PostMapping("/list")
+    fun list() =
+        PsResponseFlatList(
             flats = listOf(
                 mockRead("flat-id-001"),
                 mockRead("flat-id-002"),
@@ -33,50 +36,43 @@ class FlatController {
                 mockRead("flat-id-007")
             )
         )
-        return ok().body(response)
-    }
 
-    fun create(request: ServerRequest): ServerResponse {
-        val query = request.body(PsRequestFlatCreate::class.java)
-        val response = PsResponseFlatCreate(
+    @PostMapping("/create")
+    fun create(@RequestBody query: PsRequestFlatCreate) =
+        PsResponseFlatCreate(
             responseId = "msg-id-123",
             onRequest = query.requestId,
             endTime = Instant.now().toString(),
             status = ResponseStatusDto.SUCCESS,
             flat = mockUpdate(
-                id = "flat-id-updated",
+                id = "flat-id-created",
                 name = query.createData?.name,
                 description = query.createData?.description,
                 floor = query.createData?.floor,
                 numberOfRooms = query.createData?.numberOfRooms
             )
         )
-        return ok().body(response)
-    }
 
-    fun read(request: ServerRequest): ServerResponse {
-        val query = request.body(PsRequestFlatRead::class.java)
-        val response = PsResponseFlatRead(
+    @PostMapping("/read")
+    fun read(@RequestBody query: PsRequestFlatRead) =
+        PsResponseFlatRead(
             responseId = "msg-id-123",
             onRequest = query.requestId,
             endTime = Instant.now().toString(),
             status = ResponseStatusDto.SUCCESS,
             flat = mockRead(query.flatId ?: "")
         )
-        return ok().body(response)
-    }
 
-    fun update(request: ServerRequest): ServerResponse {
-        val query = request.body(PsRequestFlatUpdate::class.java)
-        val id = query.updateData?.id
-        val response = if (id != null)
+    @PostMapping("/update")
+    fun update(@RequestBody query: PsRequestFlatUpdate) =
+        if (query.updateData?.id != null)
             PsResponseFlatUpdate(
                 responseId = "msg-id-123",
                 onRequest = query.requestId,
                 endTime = Instant.now().toString(),
                 status = ResponseStatusDto.SUCCESS,
                 flat = mockUpdate(
-                    id = id,
+                    id = query.updateData?.id!!,
                     name = query.updateData?.name,
                     description = query.updateData?.description,
                     floor = query.updateData?.floor,
@@ -99,22 +95,17 @@ class FlatController {
                     )
                 )
             )
-        return ok().body(response)
-    }
 
-    fun delete(request: ServerRequest): ServerResponse {
-        val query = request.body(PsRequestFlatDelete::class.java)
-        return ok().body(
-            PsResponseFlatDelete(
-                responseId = "msg-id-123",
-                onRequest = query.requestId,
-                endTime = Instant.now().toString(),
-                status = ResponseStatusDto.SUCCESS,
-                flat = mockRead(query.flatId ?: ""),
-                deleted = true
-            )
+    @PostMapping("/delete")
+    fun delete(@RequestBody query: PsRequestFlatDelete) =
+        PsResponseFlatDelete(
+            responseId = "msg-id-123",
+            onRequest = query.requestId,
+            endTime = Instant.now().toString(),
+            status = ResponseStatusDto.SUCCESS,
+            flat = mockRead(query.flatId ?: ""),
+            deleted = true
         )
-    }
 
     companion object {
         fun mockUpdate(
@@ -134,7 +125,7 @@ class FlatController {
 
         fun mockRead(id: String) = mockUpdate(
             id = id,
-            name = "flat $id",
+            name = "Flat $id",
             description = "Description of flat $id",
             floor = 5,
             numberOfRooms = 2
