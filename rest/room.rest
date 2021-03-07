@@ -1,0 +1,49 @@
+POST http://{{url}}/room/list
+Content-Type: application/json
+
+{}
+
+###
+POST http://{{url}}/room/create
+Content-Type: application/json
+
+{
+  "createData": {
+    "name": "Test Room",
+    "description": "Test Room Description",
+    "length": 7.0,
+    "width": 5.0
+  }
+}
+
+###
+POST http://{{url}}/room/read
+Content-Type: application/json
+
+{
+  "roomId": "test-room-id"
+}
+
+###
+POST http://{{url}}/room/update
+Content-Type: application/json
+
+{
+  "updateData": {
+    "id": "test-room-id",
+    "name": "Test Room updated",
+    "description": "Test Room Description updated",
+    "length": 7.0,
+    "width": 5.0
+  }
+}
+
+###
+POST http://{{url}}/room/delete
+Content-Type: application/json
+
+{
+  "roomId": "test-room-id"
+}
+
+###

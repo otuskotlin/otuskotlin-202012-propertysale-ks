@@ -21,7 +21,7 @@ internal class BePsMappersTest {
     @Test
     fun flatRequestIdMappingTest() {
         val request: IPsRequest = PsRequestFlatRead(
-            id = "flat-test-id"
+            flatId = "flat-test-id"
         )
         val context = BePsContext()
 
@@ -57,7 +57,7 @@ internal class BePsMappersTest {
     @Test
     fun houseRequestIdMappingTest() {
         val request: IPsRequest = PsRequestHouseRead(
-            id = "house-test-id"
+            houseId = "house-test-id"
         )
         val context = BePsContext()
 
@@ -91,7 +91,7 @@ internal class BePsMappersTest {
     @Test
     fun roomRequestIdMappingTest() {
         val request: IPsRequest = PsRequestRoomRead(
-            id = "room-test-id"
+            roomId = "room-test-id"
         )
         val context = BePsContext()
 

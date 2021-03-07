@@ -14,7 +14,7 @@ data class PsRequestFlatRead(
     override val onResponse: String? = null,
     override val startTime: String? = null,
     override val debug: Debug? = null,
-    val id: String? = null,
+    val flatId: String? = null,
 ) : IPsRequest, PsMessage() {
 
     @Serializable

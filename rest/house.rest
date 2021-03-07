@@ -1,0 +1,47 @@
+POST http://{{url}}/house/list
+Content-Type: application/json
+
+{}
+
+###
+POST http://{{url}}/house/create
+Content-Type: application/json
+
+{
+  "createData": {
+    "name": "Test House",
+    "description": "Test House Description",
+    "area": 150.0
+  }
+}
+
+###
+POST http://{{url}}/house/read
+Content-Type: application/json
+
+{
+  "houseId": "test-house-id"
+}
+
+###
+POST http://{{url}}/house/update
+Content-Type: application/json
+
+{
+  "updateData": {
+    "id": "test-house-id",
+    "name": "Test House updated",
+    "description": "Test House Description updated",
+    "area": 150.0
+  }
+}
+
+###
+POST http://{{url}}/house/delete
+Content-Type: application/json
+
+{
+  "houseId": "test-house-id"
+}
+
+###

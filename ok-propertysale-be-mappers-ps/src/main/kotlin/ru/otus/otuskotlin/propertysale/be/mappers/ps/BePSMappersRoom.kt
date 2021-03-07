@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRo
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomUpdate
 
 fun BePsContext.setQuery(request: PsRequestRoomRead) {
-    this.requestRoomId = request.id?.let { BePsRoomIdModel(it) } ?: BePsRoomIdModel.NONE
+    this.requestRoomId = request.roomId?.let { BePsRoomIdModel(it) } ?: BePsRoomIdModel.NONE
 }
 
 fun BePsContext.setQuery(request: PsRequestRoomCreate) {
@@ -39,7 +39,7 @@ fun BePsContext.setQuery(request: PsRequestRoomUpdate) {
 }
 
 fun BePsContext.setQuery(request: PsRequestRoomDelete) {
-    this.requestRoomId = request.id?.let { BePsRoomIdModel(it) } ?: BePsRoomIdModel.NONE
+    this.requestRoomId = request.roomId?.let { BePsRoomIdModel(it) } ?: BePsRoomIdModel.NONE
 }
 
 fun PsRoomDto.toInternal() = BePsRoomModel(

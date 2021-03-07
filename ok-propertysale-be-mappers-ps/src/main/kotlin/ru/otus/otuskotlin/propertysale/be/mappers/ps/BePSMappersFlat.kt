@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFl
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatUpdate
 
 fun BePsContext.setQuery(request: PsRequestFlatRead) {
-    this.requestFlatId = request.id?.let { BePsFlatIdModel(it) } ?: BePsFlatIdModel.NONE
+    this.requestFlatId = request.flatId?.let { BePsFlatIdModel(it) } ?: BePsFlatIdModel.NONE
 }
 
 fun BePsContext.setQuery(request: PsRequestFlatCreate) {
@@ -39,7 +39,7 @@ fun BePsContext.setQuery(request: PsRequestFlatUpdate) {
 }
 
 fun BePsContext.setQuery(request: PsRequestFlatDelete) {
-    this.requestFlatId = request.id?.let { BePsFlatIdModel(it) } ?: BePsFlatIdModel.NONE
+    this.requestFlatId = request.flatId?.let { BePsFlatIdModel(it) } ?: BePsFlatIdModel.NONE
 }
 
 fun PsFlatDto.toInternal() = BePsFlatModel(

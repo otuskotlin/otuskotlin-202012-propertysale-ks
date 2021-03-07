@@ -14,7 +14,7 @@ data class PsRequestRoomRead(
     override val onResponse: String? = null,
     override val startTime: String? = null,
     override val debug: Debug? = null,
-    val id: String? = null,
+    val roomId: String? = null,
 ) : IPsRequest, PsMessage() {
 
     @Serializable

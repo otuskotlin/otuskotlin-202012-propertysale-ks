@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestH
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseUpdate
 
 fun BePsContext.setQuery(request: PsRequestHouseRead) {
-    this.requestHouseId = request.id?.let { BePsHouseIdModel(it) } ?: BePsHouseIdModel.NONE
+    this.requestHouseId = request.houseId?.let { BePsHouseIdModel(it) } ?: BePsHouseIdModel.NONE
 }
 
 fun BePsContext.setQuery(request: PsRequestHouseCreate) {
@@ -37,7 +37,7 @@ fun BePsContext.setQuery(request: PsRequestHouseUpdate) {
 }
 
 fun BePsContext.setQuery(request: PsRequestHouseDelete) {
-    this.requestHouseId = request.id?.let { BePsHouseIdModel(it) } ?: BePsHouseIdModel.NONE
+    this.requestHouseId = request.houseId?.let { BePsHouseIdModel(it) } ?: BePsHouseIdModel.NONE
 }
 
 fun PsHouseDto.toInternal() = BePsHouseModel(
