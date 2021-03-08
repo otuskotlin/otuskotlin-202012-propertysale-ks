@@ -35,6 +35,13 @@ fun BePsContext.setQuery(request: IPsRequest) =
         else -> null
     }
 
+internal fun BePsActionModel.toTransport() = PsActionDto(
+    id = id.id.takeIf { it.isNotBlank() },
+    type = type.takeIf { it.isNotBlank() },
+    content = content.takeIf { it.isNotBlank() },
+    status = status.takeIf { it.isNotBlank() }
+)
+
 fun PsActionDto.toInternal() = BePsActionModel(
     id = id?.let { BePsActionIdModel(it) } ?: BePsActionIdModel.NONE,
     type = type ?: "",

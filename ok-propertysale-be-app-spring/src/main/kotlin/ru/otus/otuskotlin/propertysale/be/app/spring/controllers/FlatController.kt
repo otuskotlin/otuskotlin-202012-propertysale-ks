@@ -120,7 +120,7 @@ class FlatController {
             description = description,
             floor = floor,
             numberOfRooms = numberOfRooms,
-            actions = setOf(PsActionDto("action-1"), PsActionDto("action-2")),
+            actions = setOf(PsActionDto("action-1"), PsActionDto("action-2"))
         )
 
         fun mockRead(id: String) = mockUpdate(
