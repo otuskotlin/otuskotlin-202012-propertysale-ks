@@ -1,8 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("js") apply false
-    kotlin("jvm") apply false
     kotlin("multiplatform") apply false
     idea
 }
