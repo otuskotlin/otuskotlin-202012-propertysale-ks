@@ -24,13 +24,13 @@ dependencies {
 
 kotless {
     config {
-        bucket = "ru.skubatko.propertysale"
+        bucket = "ru.skubatko.propertysale.aws.bucket"
         dsl {
             type = io.kotless.DSLType.Kotless
         }
         terraform {
-            profile = "default"
-            region = "eu-north-1"
+            profile = "kotless"
+            region = "us-east-1"
         }
         optimization {
             //default config
@@ -38,7 +38,7 @@ kotless {
         }
     }
     webapp {
-        route53 = io.kotless.plugin.gradle.dsl.Webapp.Route53("propertysale", "skubatko.ru","skubatko.ru")
+        route53 = io.kotless.plugin.gradle.dsl.Webapp.Route53("api", "propertysale.skubatko.ru", "propertysale.skubatko.ru")
         lambda {
             memoryMb = 256
         }
