@@ -16,6 +16,9 @@ data class BePsContext(
     var requestRoom: BePsRoomModel = BePsRoomModel.NONE,
 
     var responseFlat: BePsFlatModel = BePsFlatModel.NONE,
+    var responseFlats: MutableList<BePsFlatModel> = mutableListOf(),
     var responseHouse: BePsHouseModel = BePsHouseModel.NONE,
-    var responseRoom: BePsRoomModel = BePsRoomModel.NONE
+    var responseHouses: MutableList<BePsHouseModel> = mutableListOf(),
+    var responseRoom: BePsRoomModel = BePsRoomModel.NONE,
+    var responseRooms: MutableList<BePsRoomModel> = mutableListOf()
 )

@@ -1,0 +1,49 @@
+POST http://{{url}}/flat/list
+Content-Type: application/json
+
+{}
+
+###
+POST http://{{url}}/flat/create
+Content-Type: application/json
+
+{
+  "createData": {
+    "name": "Test Flat",
+    "description": "Test Flat Description",
+    "floor": 5,
+    "numberOfRooms": 2
+  }
+}
+
+###
+POST http://{{url}}/flat/read
+Content-Type: application/json
+
+{
+  "flatId": "test-flat-id"
+}
+
+###
+POST http://{{url}}/flat/update
+Content-Type: application/json
+
+{
+  "updateData": {
+    "id": "test-flat-id",
+    "name": "Test Flat updated",
+    "description": "Test Flat Description updated",
+    "floor": 3,
+    "numberOfRooms": 1
+  }
+}
+
+###
+POST http://{{url}}/flat/delete
+Content-Type: application/json
+
+{
+  "flatId": "test-flat-id"
+}
+
+###

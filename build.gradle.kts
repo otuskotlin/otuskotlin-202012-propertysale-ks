@@ -1,8 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("js") apply false
-    kotlin("jvm") apply false
     kotlin("multiplatform") apply false
     idea
 }
@@ -17,6 +15,8 @@ allprojects {
         gradlePluginPortal()
         mavenCentral()
         jcenter()
+        maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
+        maven { url = uri("https://repo.spring.io/milestone") }
     }
 }
 
