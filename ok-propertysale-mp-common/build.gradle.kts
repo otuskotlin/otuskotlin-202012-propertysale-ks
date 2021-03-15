@@ -10,9 +10,7 @@ kotlin {
         browser { }
         nodejs { }
     }
-    jvm {
-        withJava()
-    }
+    jvm {}
 
     sourceSets {
         val coroutinesVersion: String by project
@@ -32,8 +30,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
-                implementation(npm("is-sorted", ">1.0.0"))
+                implementation(kotlin("stdlib-js"))
             }
         }
         val jsTest by getting {
