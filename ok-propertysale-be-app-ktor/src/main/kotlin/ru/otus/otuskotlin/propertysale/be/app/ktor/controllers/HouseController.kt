@@ -1,18 +1,15 @@
 package ru.otus.otuskotlin.propertysale.be.app.ktor.controllers
 
-import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseModel
+import io.ktor.routing.*
+import ru.otus.otuskotlin.propertysale.be.app.ktor.utils.handleRoute
+import ru.otus.otuskotlin.propertysale.be.business.logic.HouseCrud
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseCreate
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseDelete
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseList
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseRead
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseUpdate
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.setQuery
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
+import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseList
@@ -24,105 +21,40 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsRespons
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseRead
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseUpdate
 
-class HouseController {
-
-    private val house = BePsHouseModel(
-        id = BePsHouseIdModel("house-id"),
-        name = "house-name",
-        description = "house-description",
-        area = 150.0,
-        actions = mutableSetOf(
-            BePsActionModel(BePsActionIdModel("action-1"))
-        )
-    )
-
-    suspend fun read(query: PsRequestHouseRead): PsMessage = BePsContext().run {
-        try {
-            setQuery(query)
-            responseHouse = house
-            respondHouseRead().copy(
-                responseId = "house-read-response-id",
-                status = ResponseStatusDto.SUCCESS,
-                onRequest = query.requestId
-            )
-        } catch (e: Throwable) {
-            PsResponseHouseRead(
-                responseId = "house-read-response-id",
-                onRequest = query.requestId,
-                status = ResponseStatusDto.INTERNAL_SERVER_ERROR,
-            )
+fun Routing.houseRouting(crud: HouseCrud) {
+    post(RestEndpoints.houseList) {
+        handleRoute<PsRequestHouseList, PsResponseHouseList> { query ->
+            query?.also { setQuery(it) }
+            crud.list(this)
+            respondHouseList()
         }
     }
-
-    suspend fun create(query: PsRequestHouseCreate): PsMessage = BePsContext().run {
-        try {
-            setQuery(query)
-            responseHouse = house
-            respondHouseCreate().copy(
-                responseId = "house-create-response-id",
-                status = ResponseStatusDto.SUCCESS,
-                onRequest = query.requestId
-            )
-        } catch (e: Throwable) {
-            PsResponseHouseCreate(
-                responseId = "house-create-response-id",
-                onRequest = query.requestId,
-                status = ResponseStatusDto.INTERNAL_SERVER_ERROR,
-            )
+    post(RestEndpoints.houseCreate) {
+        handleRoute<PsRequestHouseCreate, PsResponseHouseCreate> { query ->
+            query?.also { setQuery(it) }
+            crud.create(this)
+            respondHouseCreate()
         }
     }
-
-    suspend fun update(query: PsRequestHouseUpdate): PsMessage = BePsContext().run {
-        try {
-            setQuery(query)
-            responseHouse = house
-            respondHouseUpdate().copy(
-                responseId = "house-update-response-id",
-                status = ResponseStatusDto.SUCCESS,
-                onRequest = query.requestId
-            )
-        } catch (e: Throwable) {
-            PsResponseHouseUpdate(
-                responseId = "house-update-response-id",
-                onRequest = query.requestId,
-                status = ResponseStatusDto.INTERNAL_SERVER_ERROR,
-            )
+    post(RestEndpoints.houseRead) {
+        handleRoute<PsRequestHouseRead, PsResponseHouseRead> { query ->
+            query?.also { setQuery(it) }
+            crud.read(this)
+            respondHouseRead()
         }
     }
-
-    suspend fun delete(query: PsRequestHouseDelete): PsMessage = BePsContext().run {
-        try {
-            setQuery(query)
-            responseHouse = house
-            respondHouseDelete().copy(
-                responseId = "house-delete-response-id",
-                status = ResponseStatusDto.SUCCESS,
-                onRequest = query.requestId
-            )
-        } catch (e: Throwable) {
-            PsResponseHouseDelete(
-                responseId = "house-delete-response-id",
-                onRequest = query.requestId,
-                status = ResponseStatusDto.INTERNAL_SERVER_ERROR,
-            )
+    post(RestEndpoints.houseUpdate) {
+        handleRoute<PsRequestHouseUpdate, PsResponseHouseUpdate> { query ->
+            query?.also { setQuery(it) }
+            crud.update(this)
+            respondHouseUpdate()
         }
     }
-
-    suspend fun list(query: PsRequestHouseList): PsMessage = BePsContext().run {
-        try {
-            setQuery(query)
-            responseHouses = mutableListOf(house)
-            respondHouseList().copy(
-                responseId = "house-list-response-id",
-                status = ResponseStatusDto.SUCCESS,
-                onRequest = query.requestId
-            )
-        } catch (e: Throwable) {
-            PsResponseHouseList(
-                responseId = "house-list-response-id",
-                onRequest = query.requestId,
-                status = ResponseStatusDto.INTERNAL_SERVER_ERROR,
-            )
+    post(RestEndpoints.houseDelete) {
+        handleRoute<PsRequestHouseDelete, PsResponseHouseDelete> { query ->
+            query?.also { setQuery(it) }
+            crud.delete(this)
+            respondHouseDelete()
         }
     }
 }

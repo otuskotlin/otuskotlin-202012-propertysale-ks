@@ -1,9 +1,9 @@
 package ru.otus.otuskotlin.propertysale.be.mappers.ps
 
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatModel
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.PsFlatDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatCreate
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatDelete

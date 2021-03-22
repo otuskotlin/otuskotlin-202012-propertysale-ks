@@ -1,14 +1,14 @@
 package ru.otus.otuskotlin.propertysale.be.business.logic
 
-import org.junit.Test
-import ru.otus.otuskotlin.propertysale.be.business.logic.room.RoomCrud
+import org.junit.jupiter.api.Test
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsRoomFilterModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsRoomIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsRoomModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
+import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomFilterModel
+import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomModel
 import ru.otus.otuskotlin.propertysale.mp.common.test.runBlockingTest
 import kotlin.test.assertEquals
 
@@ -18,10 +18,11 @@ class RoomCrudTest {
     fun crudGetTest() {
         val givenCrud = RoomCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.ROOM_READ_SUCCESS,
             requestRoomId = BePsRoomIdModel("room-test-id")
         )
         runBlockingTest {
-            givenCrud.get(givenContext)
+            givenCrud.read(givenContext)
         }
         assertEquals(BePsContextStatus.SUCCESS, givenContext.status)
         assertEquals(BePsRoomIdModel("room-test-id"), givenContext.responseRoom.id)
@@ -36,6 +37,7 @@ class RoomCrudTest {
     fun crudCreateTest() {
         val givenCrud = RoomCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.ROOM_CREATE_SUCCESS,
             requestRoom = BePsRoomModel(
                 name = "room-test-name",
                 description = "room-test-description",
@@ -62,7 +64,9 @@ class RoomCrudTest {
     fun crudUpdateTest() {
         val givenCrud = RoomCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.ROOM_UPDATE_SUCCESS,
             requestRoom = BePsRoomModel(
+                id = BePsRoomIdModel("room-test-id"),
                 name = "room-test-name",
                 description = "room-test-description",
                 length = 7.0,
@@ -88,6 +92,7 @@ class RoomCrudTest {
     fun crudDeleteTest() {
         val givenCrud = RoomCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.ROOM_DELETE_SUCCESS,
             requestRoomId = BePsRoomIdModel("room-test-id")
         )
         runBlockingTest {
@@ -106,10 +111,11 @@ class RoomCrudTest {
     fun crudFilterTest() {
         val givenCrud = RoomCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.ROOM_LIST_SUCCESS,
             roomFilter = BePsRoomFilterModel("test-room")
         )
         runBlockingTest {
-            givenCrud.filter(givenContext)
+            givenCrud.list(givenContext)
         }
         assertEquals(BePsContextStatus.SUCCESS, givenContext.status)
         assertEquals(1, givenContext.responseRooms.size)

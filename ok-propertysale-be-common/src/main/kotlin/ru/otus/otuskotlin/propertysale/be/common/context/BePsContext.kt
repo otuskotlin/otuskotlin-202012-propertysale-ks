@@ -1,17 +1,26 @@
 package ru.otus.otuskotlin.propertysale.be.common.context
 
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatFilterModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseFilterModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsRoomFilterModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsRoomIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsRoomModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.IPsError
+import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatFilterModel
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatModel
+import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseFilterModel
+import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseModel
+import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomFilterModel
+import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomModel
+import java.time.Instant
 
 data class BePsContext(
+    var timeStarted: Instant = Instant.MIN,
+    var responseId: String = "",
+    var onRequest: String = "",
     var status: BePsContextStatus = BePsContextStatus.NONE,
+    var errors: MutableList<IPsError> = mutableListOf(),
+    var frameworkErrors: MutableList<Throwable> = mutableListOf(),
+    var stubCase: PsStubCase = PsStubCase.NONE,
 
     var requestFlatId: BePsFlatIdModel = BePsFlatIdModel.NONE,
     var requestFlat: BePsFlatModel = BePsFlatModel.NONE,

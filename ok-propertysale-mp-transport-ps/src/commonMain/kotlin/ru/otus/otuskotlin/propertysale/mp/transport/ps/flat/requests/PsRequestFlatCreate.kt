@@ -20,6 +20,13 @@ data class PsRequestFlatCreate(
 
     @Serializable
     data class Debug(
-        override val mode: PsWorkModeDto?
+        override val mode: PsWorkModeDto? = null,
+        val stubCase: StubCase? = null
     ) : IPsDebug
+
+    @Serializable
+    enum class StubCase {
+        NONE,
+        SUCCESS
+    }
 }

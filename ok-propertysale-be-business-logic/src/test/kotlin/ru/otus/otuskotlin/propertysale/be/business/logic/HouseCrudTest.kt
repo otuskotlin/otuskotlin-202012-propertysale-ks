@@ -1,14 +1,14 @@
 package ru.otus.otuskotlin.propertysale.be.business.logic
 
-import org.junit.Test
-import ru.otus.otuskotlin.propertysale.be.business.logic.house.HouseCrud
+import org.junit.jupiter.api.Test
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseFilterModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsHouseModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
+import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseFilterModel
+import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseModel
 import ru.otus.otuskotlin.propertysale.mp.common.test.runBlockingTest
 import kotlin.test.assertEquals
 
@@ -18,10 +18,11 @@ class HouseCrudTest {
     fun crudGetTest() {
         val givenCrud = HouseCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.HOUSE_READ_SUCCESS,
             requestHouseId = BePsHouseIdModel("house-test-id")
         )
         runBlockingTest {
-            givenCrud.get(givenContext)
+            givenCrud.read(givenContext)
         }
         assertEquals(BePsContextStatus.SUCCESS, givenContext.status)
         assertEquals(BePsHouseIdModel("house-test-id"), givenContext.responseHouse.id)
@@ -41,6 +42,7 @@ class HouseCrudTest {
     fun crudCreateTest() {
         val givenCrud = HouseCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.HOUSE_CREATE_SUCCESS,
             requestHouse = BePsHouseModel(
                 name = "house-test-name",
                 description = "house-test-description",
@@ -72,7 +74,9 @@ class HouseCrudTest {
     fun crudUpdateTest() {
         val givenCrud = HouseCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.HOUSE_UPDATE_SUCCESS,
             requestHouse = BePsHouseModel(
+                id = BePsHouseIdModel("house-test-id"),
                 name = "house-test-name",
                 description = "house-test-description",
                 area = 150.0,
@@ -103,6 +107,7 @@ class HouseCrudTest {
     fun crudDeleteTest() {
         val givenCrud = HouseCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.HOUSE_DELETE_SUCCESS,
             requestHouseId = BePsHouseIdModel("house-test-id")
         )
         runBlockingTest {
@@ -126,10 +131,11 @@ class HouseCrudTest {
     fun crudFilterTest() {
         val givenCrud = HouseCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.HOUSE_LIST_SUCCESS,
             houseFilter = BePsHouseFilterModel("test-house")
         )
         runBlockingTest {
-            givenCrud.filter(givenContext)
+            givenCrud.list(givenContext)
         }
         assertEquals(BePsContextStatus.SUCCESS, givenContext.status)
         assertEquals(1, givenContext.responseHouses.size)

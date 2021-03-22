@@ -1,14 +1,14 @@
 package ru.otus.otuskotlin.propertysale.be.business.logic
 
-import org.junit.Test
-import ru.otus.otuskotlin.propertysale.be.business.logic.flat.FlatCrud
+import org.junit.jupiter.api.Test
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsActionModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatFilterModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatIdModel
-import ru.otus.otuskotlin.propertysale.be.common.models.BePsFlatModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
+import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatFilterModel
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatIdModel
+import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatModel
 import ru.otus.otuskotlin.propertysale.mp.common.test.runBlockingTest
 import kotlin.test.assertEquals
 
@@ -18,10 +18,11 @@ class FlatCrudTest {
     fun crudGetTest() {
         val givenCrud = FlatCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.FLAT_READ_SUCCESS,
             requestFlatId = BePsFlatIdModel("flat-test-id")
         )
         runBlockingTest {
-            givenCrud.get(givenContext)
+            givenCrud.read(givenContext)
         }
         assertEquals(BePsContextStatus.SUCCESS, givenContext.status)
         assertEquals(BePsFlatIdModel("flat-test-id"), givenContext.responseFlat.id)
@@ -43,6 +44,7 @@ class FlatCrudTest {
     fun crudCreateTest() {
         val givenCrud = FlatCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.FLAT_CREATE_SUCCESS,
             requestFlat = BePsFlatModel(
                 name = "flat-test-name",
                 description = "flat-test-description",
@@ -78,7 +80,9 @@ class FlatCrudTest {
     fun crudUpdateTest() {
         val givenCrud = FlatCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.FLAT_UPDATE_SUCCESS,
             requestFlat = BePsFlatModel(
+                id = BePsFlatIdModel("flat-test-id"),
                 name = "flat-test-name",
                 description = "flat-test-description",
                 floor = 5,
@@ -113,6 +117,7 @@ class FlatCrudTest {
     fun crudDeleteTest() {
         val givenCrud = FlatCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.FLAT_DELETE_SUCCESS,
             requestFlatId = BePsFlatIdModel("flat-test-id")
         )
         runBlockingTest {
@@ -138,10 +143,11 @@ class FlatCrudTest {
     fun crudFilterTest() {
         val givenCrud = FlatCrud()
         val givenContext = BePsContext(
+            stubCase = PsStubCase.FLAT_LIST_SUCCESS,
             flatFilter = BePsFlatFilterModel("test-flat")
         )
         runBlockingTest {
-            givenCrud.filter(givenContext)
+            givenCrud.list(givenContext)
         }
         assertEquals(BePsContextStatus.SUCCESS, givenContext.status)
         assertEquals(1, givenContext.responseFlats.size)

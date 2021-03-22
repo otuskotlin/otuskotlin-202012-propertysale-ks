@@ -11,10 +11,6 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
-val ktorVersion: String by project
-val kotlinVersion: String by project
-val logbackVersion: String by project
-
 docker {
     javaApplication {
         baseImage.set("adoptopenjdk/openjdk11:alpine-jre")
@@ -38,9 +34,15 @@ repositories {
 }
 
 dependencies {
+    val ktorVersion: String by project
+    val kotlinVersion: String by project
+    val logbackVersion: String by project
+
+    implementation(project(":ok-propertysale-mp-common"))
     implementation(project(":ok-propertysale-be-common"))
     implementation(project(":ok-propertysale-mp-transport-ps"))
     implementation(project(":ok-propertysale-be-mappers-ps"))
+    implementation(project(":ok-propertysale-be-business-logic"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 

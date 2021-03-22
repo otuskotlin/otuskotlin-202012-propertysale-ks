@@ -13,9 +13,11 @@ dependencies {
     val kotlessVersion: String by project
     val coroutinesVersion: String by project
 
+    implementation(project(":ok-propertysale-mp-common"))
     implementation(project(":ok-propertysale-be-common"))
-    api(project(":ok-propertysale-mp-transport-ps"))
-    api(project(":ok-propertysale-be-mappers-ps"))
+    implementation(project(":ok-propertysale-mp-transport-ps"))
+    implementation(project(":ok-propertysale-be-mappers-ps"))
+    implementation(project(":ok-propertysale-be-business-logic"))
 
     implementation(kotlin("stdlib"))
     implementation("io.kotless", "kotless-lang", kotlessVersion)
