@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.flat
+package ru.otus.otuskotlin.propertysale.be.app.ktor.house
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -8,28 +8,28 @@ import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.models.PsFlatListFilterDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseListFilterDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseList
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class FlatListValidationTest {
+class HouseListValidationTest {
 
     @Test
     fun `non-empty list must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.flatList) {
-                val body = PsRequestFlatList(
+            handleRequest(HttpMethod.Post, RestEndpoints.houseList) {
+                val body = PsRequestHouseList(
                     requestId = "test-request-id",
-                    filterData = PsFlatListFilterDto(
+                    filterData = PsHouseListFilterDto(
 
                     ),
-                    debug = PsRequestFlatList.Debug(
+                    debug = PsRequestHouseList.Debug(
                         mode = PsWorkModeDto.TEST,
-                        stubCase = PsRequestFlatList.StubCase.SUCCESS
+                        stubCase = PsRequestHouseList.StubCase.SUCCESS
                     )
                 )
 
@@ -43,12 +43,12 @@ class FlatListValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatList)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseList)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("flat-test-name", res.flats?.firstOrNull()?.name)
+                assertEquals("house-test-name", res.houses?.firstOrNull()?.name)
             }
         }
     }
@@ -56,7 +56,7 @@ class FlatListValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.flatList) {
+            handleRequest(HttpMethod.Post, RestEndpoints.houseList) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -66,7 +66,7 @@ class FlatListValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatList)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseList)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

@@ -5,9 +5,17 @@ import org.springframework.fu.kofu.webmvc.webMvc
 import ru.otus.otuskotlin.propertysale.be.app.spring.fu.controllers.FlatController
 import ru.otus.otuskotlin.propertysale.be.app.spring.fu.controllers.HouseController
 import ru.otus.otuskotlin.propertysale.be.app.spring.fu.controllers.RoomController
+import ru.otus.otuskotlin.propertysale.be.business.logic.FlatCrud
+import ru.otus.otuskotlin.propertysale.be.business.logic.HouseCrud
+import ru.otus.otuskotlin.propertysale.be.business.logic.RoomCrud
+import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
 
 val app = webApplication {
     beans {
+        bean<FlatCrud>()
+        bean<HouseCrud>()
+        bean<RoomCrud>()
+
         bean<FlatController>()
         bean<HouseController>()
         bean<RoomController>()
@@ -17,25 +25,25 @@ val app = webApplication {
 
         router {
             val flatController = ref<FlatController>()
-            POST("/flat/list", flatController::list)
-            POST("/flat/create", flatController::create)
-            POST("/flat/read", flatController::read)
-            POST("/flat/update", flatController::update)
-            POST("/flat/delete", flatController::delete)
+            POST(RestEndpoints.flatList, flatController::list)
+            POST(RestEndpoints.flatCreate, flatController::create)
+            POST(RestEndpoints.flatRead, flatController::read)
+            POST(RestEndpoints.flatUpdate, flatController::update)
+            POST(RestEndpoints.flatDelete, flatController::delete)
 
             val houseController = ref<HouseController>()
-            POST("/house/list", houseController::list)
-            POST("/house/create", houseController::create)
-            POST("/house/read", houseController::read)
-            POST("/house/update", houseController::update)
-            POST("/house/delete", houseController::delete)
+            POST(RestEndpoints.houseList, houseController::list)
+            POST(RestEndpoints.houseCreate, houseController::create)
+            POST(RestEndpoints.houseRead, houseController::read)
+            POST(RestEndpoints.houseUpdate, houseController::update)
+            POST(RestEndpoints.houseDelete, houseController::delete)
 
             val roomController = ref<RoomController>()
-            POST("/room/list", roomController::list)
-            POST("/room/create", roomController::create)
-            POST("/room/read", roomController::read)
-            POST("/room/update", roomController::update)
-            POST("/room/delete", roomController::delete)
+            POST(RestEndpoints.roomList, roomController::list)
+            POST(RestEndpoints.roomCreate, roomController::create)
+            POST(RestEndpoints.roomRead, roomController::read)
+            POST(RestEndpoints.roomUpdate, roomController::update)
+            POST(RestEndpoints.roomDelete, roomController::delete)
         }
         converters {
             string()

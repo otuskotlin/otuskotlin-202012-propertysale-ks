@@ -50,7 +50,7 @@ class PsBeAppKtorKtTest {
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("test-flat", res.flat?.name)
+                assertEquals("flat-test-name", res.flat?.name)
             }
         }
     }

@@ -1,8 +1,6 @@
 package ru.otus.otuskotlin.propertysale.be.app.spring.fu.controllers
 
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -12,7 +10,14 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 import ru.otus.otuskotlin.propertysale.be.app.spring.fu.app
+import ru.otus.otuskotlin.propertysale.be.app.spring.fu.config.jsonConfig
+import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomListFilterDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomUpdateDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomCreate
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomDelete
@@ -23,11 +28,15 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponse
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomDelete
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomList
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomUpdate
+import kotlin.test.fail
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RoomControllerTest {
 
-    private val client = WebTestClient.bindToServer().baseUrl("http://localhost:8181").build()
+    private val client = WebTestClient
+        .bindToServer().baseUrl("http://localhost:8181")
+        .build()
 
     private lateinit var context: ConfigurableApplicationContext
 
@@ -38,122 +47,184 @@ internal class RoomControllerTest {
 
     @Test
     fun `Room List`() {
-        val res = client
+        val body = PsRequestRoomList(
+            requestId = "test-request-id",
+            filterData = PsRoomListFilterDto(
+
+            ),
+            debug = PsRequestRoomList.Debug(
+                mode = PsWorkModeDto.TEST,
+                stubCase = PsRequestRoomList.StubCase.SUCCESS
+            )
+        )
+
+        val jsonString = client
             .post()
             .uri("/room/list")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(PsRequestRoomList())
+            .bodyValue(body)
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<PsResponseRoomList>()
+            .expectBody<String>()
             .returnResult()
-            .responseBody
+            .responseBody ?: fail("Null response json")
 
-        assertEquals(7, res?.rooms?.size)
+        println(jsonString)
+
+        val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomList)
+            ?: fail("Incorrect response format")
+
+        kotlin.test.assertEquals(ResponseStatusDto.SUCCESS, res.status)
+        kotlin.test.assertEquals("test-request-id", res.onRequest)
+        kotlin.test.assertEquals("room-test-name", res.rooms?.firstOrNull()?.name)
     }
 
     @Test
     fun `Room Create`() {
-        val res = client
+        val body = PsRequestRoomCreate(
+            requestId = "test-request-id",
+            createData = PsRoomCreateDto(
+                name = "room-test-name",
+                description = "room-test-description",
+                length = 7.0,
+                width = 5.0,
+                actions = setOf(
+                    PsActionDto("test-action-1"),
+                    PsActionDto("test-action-2"),
+                    PsActionDto("test-action-3")
+                )
+            ),
+            debug = PsRequestRoomCreate.Debug(
+                mode = PsWorkModeDto.TEST,
+                stubCase = PsRequestRoomCreate.StubCase.SUCCESS
+            )
+        )
+
+        val jsonString = client
             .post()
             .uri("/room/create")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(
-                PsRequestRoomCreate(
-                    createData = PsRoomCreateDto(
-                        name = "Test Room",
-                        description = "Test Room Description",
-                        length = 5.0,
-                        width = 3.0
-                    )
-                )
-            )
+            .bodyValue(body)
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<PsResponseRoomCreate>()
+            .expectBody<String>()
             .returnResult()
-            .responseBody
+            .responseBody ?: fail("Null response json")
 
-        assertEquals("test-room-id", res?.room?.id)
-        assertEquals("Test Room", res?.room?.name)
-        assertEquals("Test Room Description", res?.room?.description)
-        assertEquals(5.0, res?.room?.length)
-        assertEquals(3.0, res?.room?.width)
+        println(jsonString)
+
+        val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
+            ?: fail("Incorrect response format")
+
+        kotlin.test.assertEquals(ResponseStatusDto.SUCCESS, res.status)
+        kotlin.test.assertEquals("test-request-id", res.onRequest)
+        kotlin.test.assertEquals("room-test-name", res.room?.name)
     }
 
     @Test
     fun `Room Read`() {
-        val res = client
+        val body = PsRequestRoomRead(
+            requestId = "test-request-id",
+            roomId = "test-room-id",
+            debug = PsRequestRoomRead.Debug(stubCase = PsRequestRoomRead.StubCase.SUCCESS)
+        )
+
+        val jsonString = client
             .post()
-            .uri("/room/read")
+            .uri(RestEndpoints.roomRead)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(
-                PsRequestRoomRead(
-                    roomId = "test-room-id",
-                )
-            )
+            .bodyValue(body)
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<PsResponseRoomRead>()
+            .expectBody<String>()
             .returnResult()
-            .responseBody
+            .responseBody ?: fail("Null response json")
 
-        assertEquals("test-room-id", res?.room?.id)
-        assertEquals("Room test-room-id", res?.room?.name)
-        assertEquals("Description of room test-room-id", res?.room?.description)
-        assertEquals(7.0, res?.room?.length)
-        assertEquals(5.0, res?.room?.width)
+        println(jsonString)
+
+        val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomRead)
+            ?: fail("Incorrect response format")
+
+        kotlin.test.assertEquals(ResponseStatusDto.SUCCESS, res.status)
+        kotlin.test.assertEquals("test-request-id", res.onRequest)
+        kotlin.test.assertEquals("room-test-name", res.room?.name)
     }
 
     @Test
     fun `Room Update`() {
-        val res = client
+        val body = PsRequestRoomUpdate(
+            requestId = "test-request-id",
+            updateData = PsRoomUpdateDto(
+                id = "room-test-id",
+                name = "room-test-name",
+                description = "room-test-description",
+                length = 7.0,
+                width = 5.0,
+                actions = setOf(
+                    PsActionDto("test-action-1"),
+                    PsActionDto("test-action-2"),
+                    PsActionDto("test-action-3")
+                )
+            ),
+            debug = PsRequestRoomUpdate.Debug(
+                mode = PsWorkModeDto.TEST,
+                stubCase = PsRequestRoomUpdate.StubCase.SUCCESS
+            )
+        )
+
+        val jsonString = client
             .post()
             .uri("/room/update")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(
-                PsRequestRoomUpdate(
-                    updateData = PsRoomUpdateDto(
-                        id = "test-room-id",
-                        name = "Test Room updated",
-                        description = "Test Room Description updated",
-                        length = 4.0,
-                        width = 4.0
-                    )
-                )
-            )
+            .bodyValue(body)
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<PsResponseRoomDelete>()
+            .expectBody<String>()
             .returnResult()
-            .responseBody
+            .responseBody ?: fail("Null response json")
 
-        assertEquals("test-room-id", res?.room?.id)
-        assertEquals("Test Room updated", res?.room?.name)
-        assertEquals("Test Room Description updated", res?.room?.description)
-        assertEquals(4.0, res?.room?.length)
-        assertEquals(4.0, res?.room?.width)
+        println(jsonString)
+
+        val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomUpdate)
+            ?: fail("Incorrect response format")
+
+        kotlin.test.assertEquals(ResponseStatusDto.SUCCESS, res.status)
+        kotlin.test.assertEquals("test-request-id", res.onRequest)
+        kotlin.test.assertEquals("room-test-id", res.room?.id)
+        kotlin.test.assertEquals("room-test-name", res.room?.name)
     }
 
     @Test
     fun `Room Delete`() {
-        val res = client
+        val body = PsRequestRoomDelete(
+            requestId = "test-request-id",
+            roomId = "test-room-id",
+            debug = PsRequestRoomDelete.Debug(
+                mode = PsWorkModeDto.TEST,
+                stubCase = PsRequestRoomDelete.StubCase.SUCCESS
+            )
+        )
+
+        val jsonString = client
             .post()
             .uri("/room/delete")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(
-                PsRequestRoomDelete(
-                    roomId = "test-room-id",
-                )
-            )
+            .bodyValue(body)
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<PsResponseRoomDelete>()
+            .expectBody<String>()
             .returnResult()
-            .responseBody
+            .responseBody ?: fail("Null response json")
 
-        assertEquals("test-room-id", res?.room?.id)
-        assertTrue(res?.deleted!!)
+        println(jsonString)
+
+        val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomDelete)
+            ?: fail("Incorrect response format")
+
+        kotlin.test.assertEquals(ResponseStatusDto.SUCCESS, res.status)
+        kotlin.test.assertEquals("test-request-id", res.onRequest)
+        kotlin.test.assertEquals("room-test-id", res.room?.id)
+        kotlin.test.assertEquals("room-test-name", res.room?.name)
     }
 
     @AfterAll

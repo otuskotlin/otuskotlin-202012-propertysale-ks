@@ -45,8 +45,8 @@ class FlatDeleteValidationTest {
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("test-flat-id", res.flat?.id)
-                assertEquals("test-flat-name", res.flat?.name)
+                assertEquals("flat-test-id", res.flat?.id)
+                assertEquals("flat-test-name", res.flat?.name)
             }
         }
     }

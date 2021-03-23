@@ -16,17 +16,20 @@ java.targetCompatibility = JavaVersion.toVersion(javaVersion)
 dependencies {
     val springFuVersion: String by project
     val serializationVersion: String by project
+    val coroutinesVersion: String by project
 
     implementation(project(":ok-propertysale-mp-common"))
-    implementation(project(":ok-propertysale-mp-transport-ps"))
     implementation(project(":ok-propertysale-be-common"))
+    implementation(project(":ok-propertysale-mp-transport-ps"))
     implementation(project(":ok-propertysale-be-mappers-ps"))
+    implementation(project(":ok-propertysale-be-business-logic"))
 
     implementation(kotlin("stdlib"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.fu:spring-fu-kofu:$springFuVersion")
     implementation("org.springframework:spring-webmvc")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
     testImplementation(kotlin("test-junit5"))
