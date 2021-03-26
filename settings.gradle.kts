@@ -31,9 +31,12 @@ include(
     "ok-propertysale-be-app-ktor",
     "ok-propertysale-be-app-spring",
     "ok-propertysale-be-app-spring-fu",
+    "ok-propertysale-be-business-logic",
     "ok-propertysale-be-common",
     "ok-propertysale-be-mappers-ps",
     "ok-propertysale-fe-common",
     "ok-propertysale-mp-common",
+    "ok-propertysale-mp-pipelines",
+    "ok-propertysale-mp-pipelines-validation",
     "ok-propertysale-mp-transport-ps"
 )
