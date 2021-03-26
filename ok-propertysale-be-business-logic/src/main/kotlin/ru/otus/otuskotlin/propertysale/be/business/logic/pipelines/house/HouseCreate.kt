@@ -28,7 +28,7 @@ object HouseCreate : IOperation<BePsContext> by pipeline({
             validator(
                 ValidatorStringNonEmpty(
                     field = "description",
-                    message = "You must provide non-empty description for the demand"
+                    message = "You must provide non-empty description for the house"
                 )
             )
             on { requestHouse.description }

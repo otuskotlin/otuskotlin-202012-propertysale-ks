@@ -89,7 +89,7 @@ class HouseController {
                         group = "validation",
                         field = "id",
                         level = ErrorDto.Level.ERROR,
-                        message = "id of the demand to be updated cannot be empty"
+                        message = "id of the house to be updated cannot be empty"
                     )
                 )
             )

@@ -28,7 +28,7 @@ object RoomCreate : IOperation<BePsContext> by pipeline({
             validator(
                 ValidatorStringNonEmpty(
                     field = "description",
-                    message = "You must provide non-empty description for the demand"
+                    message = "You must provide non-empty description for the room"
                 )
             )
             on { requestRoom.description }

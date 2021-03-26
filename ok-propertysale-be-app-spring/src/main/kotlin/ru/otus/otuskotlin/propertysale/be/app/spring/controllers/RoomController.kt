@@ -91,7 +91,7 @@ class RoomController {
                         group = "validation",
                         field = "id",
                         level = ErrorDto.Level.ERROR,
-                        message = "id of the demand to be updated cannot be empty"
+                        message = "id of the room to be updated cannot be empty"
                     )
                 )
             )
