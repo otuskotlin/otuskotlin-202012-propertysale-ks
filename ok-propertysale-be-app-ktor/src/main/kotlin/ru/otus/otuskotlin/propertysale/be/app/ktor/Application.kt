@@ -9,10 +9,13 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.websocket.*
 import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.serializer
+import pl.jutupe.ktor_rabbitmq.RabbitMQ
 import ru.otus.otuskotlin.propertysale.be.app.ktor.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.flatRouting
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.houseRouting
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.mpWebsocket
+import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.rabbitMq
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.roomRouting
 import ru.otus.otuskotlin.propertysale.be.app.ktor.services.FlatService
 import ru.otus.otuskotlin.propertysale.be.app.ktor.services.HouseService
@@ -20,6 +23,7 @@ import ru.otus.otuskotlin.propertysale.be.app.ktor.services.RoomService
 import ru.otus.otuskotlin.propertysale.be.business.logic.FlatCrud
 import ru.otus.otuskotlin.propertysale.be.business.logic.HouseCrud
 import ru.otus.otuskotlin.propertysale.be.business.logic.RoomCrud
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -28,13 +32,14 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-    val flatCrud = FlatCrud()
-    val houseCrud = HouseCrud()
-    val roomCrud = RoomCrud()
+    val flatService = FlatService(FlatCrud())
+    val houseService = HouseService(HouseCrud())
+    val roomService = RoomService(RoomCrud())
 
-    val flatService = FlatService(flatCrud)
-    val houseService = HouseService(houseCrud)
-    val roomService = RoomService(roomCrud)
+    val queueIn by lazy { environment.config.property("propertysale.rabbitmq.queueIn").getString() }
+    val exchangeIn by lazy { environment.config.property("propertysale.rabbitmq.exchangeIn").getString() }
+    val exchangeOut by lazy { environment.config.property("propertysale.rabbitmq.exchangeOut").getString() }
+    val rabbitMqEndpoint by lazy { environment.config.property("propertysale.rabbitmq.endpoint").getString() }
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -59,6 +64,35 @@ fun Application.module(testing: Boolean = false) {
         )
     }
 
+    install(RabbitMQ) {
+        uri = rabbitMqEndpoint
+        connectionName = "Connection name"
+
+        //serialize and deserialize functions are required
+        serialize {
+            when (it) {
+                is PsMessage -> jsonConfig.encodeToString(PsMessage.serializer(), it).toByteArray()
+                else -> jsonConfig.encodeToString(Any::class.serializer(), it).toByteArray()
+            }
+        }
+        deserialize { bytes, type ->
+            val jsonString = String(bytes, Charsets.UTF_8)
+            jsonConfig.decodeFromString(type.serializer(), jsonString)
+        }
+
+        //example initialization logic
+        initialize {
+            exchangeDeclare(exchangeIn, "fanout", true)
+            exchangeDeclare(exchangeOut, "fanout", true)
+            queueDeclare(queueIn, true, false, false, emptyMap())
+            queueBind(
+                queueIn,
+                exchangeIn,
+                "*"
+            )
+        }
+    }
+
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
@@ -74,5 +108,13 @@ fun Application.module(testing: Boolean = false) {
         roomRouting(roomService)
 
         mpWebsocket(flatService, houseService, roomService)
+
+        rabbitMq(
+            queueIn = queueIn,
+            exchangeOut = exchangeOut,
+            flatService = flatService,
+            houseService = houseService,
+            roomService = roomService
+        )
     }
 }

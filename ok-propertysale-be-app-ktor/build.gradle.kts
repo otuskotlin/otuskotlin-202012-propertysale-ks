@@ -38,6 +38,9 @@ dependencies {
     val kotlinVersion: String by project
     val logbackVersion: String by project
     val serializationVersion: String by project
+    val ktorRabbitmqFeature: String by project
+    val rabbitmqVersion: String by project
+    val testContainersVersion: String by project
 
     implementation(project(":ok-propertysale-mp-common"))
     implementation(project(":ok-propertysale-be-common"))
@@ -54,7 +57,11 @@ dependencies {
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-websockets:$ktorVersion")
 
+    implementation("com.github.JUtupe:ktor-rabbitmq:$ktorRabbitmqFeature")
+    implementation("com.rabbitmq:amqp-client:$rabbitmqVersion")
+
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
 }
