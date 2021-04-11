@@ -7,19 +7,34 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
+import io.ktor.websocket.*
+import kotlinx.serialization.InternalSerializationApi
 import ru.otus.otuskotlin.propertysale.be.app.ktor.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.flatRouting
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.houseRouting
+import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.mpWebsocket
 import ru.otus.otuskotlin.propertysale.be.app.ktor.controllers.roomRouting
+import ru.otus.otuskotlin.propertysale.be.app.ktor.services.FlatService
+import ru.otus.otuskotlin.propertysale.be.app.ktor.services.HouseService
+import ru.otus.otuskotlin.propertysale.be.app.ktor.services.RoomService
 import ru.otus.otuskotlin.propertysale.be.business.logic.FlatCrud
 import ru.otus.otuskotlin.propertysale.be.business.logic.HouseCrud
 import ru.otus.otuskotlin.propertysale.be.business.logic.RoomCrud
 
-fun Application.module(testing: Boolean) {
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+@OptIn(InternalSerializationApi::class)
+@Suppress("unused") // Referenced in application.conf
+@kotlin.jvm.JvmOverloads
+fun Application.module(testing: Boolean = false) {
 
     val flatCrud = FlatCrud()
     val houseCrud = HouseCrud()
     val roomCrud = RoomCrud()
+
+    val flatService = FlatService(flatCrud)
+    val houseService = HouseService(houseCrud)
+    val roomService = RoomService(roomCrud)
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -32,6 +47,8 @@ fun Application.module(testing: Boolean) {
         allowCredentials = true
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
+
+    install(WebSockets)
 
     install(CallLogging)
 
@@ -52,8 +69,10 @@ fun Application.module(testing: Boolean) {
             resources("static")
         }
 
-        flatRouting(flatCrud)
-        houseRouting(houseCrud)
-        roomRouting(roomCrud)
+        flatRouting(flatService)
+        houseRouting(houseService)
+        roomRouting(roomService)
+
+        mpWebsocket(flatService, houseService, roomService)
     }
 }

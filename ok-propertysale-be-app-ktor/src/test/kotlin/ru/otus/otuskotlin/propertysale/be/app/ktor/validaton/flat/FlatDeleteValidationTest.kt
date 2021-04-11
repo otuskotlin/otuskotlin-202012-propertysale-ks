@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.house
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.flat
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -8,25 +8,25 @@ import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatDelete
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class HouseDeleteValidationTest {
+class FlatDeleteValidationTest {
 
     @Test
     fun `non-empty delete must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.houseDelete) {
-                val body = PsRequestHouseDelete(
+            handleRequest(HttpMethod.Post, RestEndpoints.flatDelete) {
+                val body = PsRequestFlatDelete(
                     requestId = "test-request-id",
-                    houseId = "test-house-id",
-                    debug = PsRequestHouseDelete.Debug(
+                    flatId = "test-flat-id",
+                    debug = PsRequestFlatDelete.Debug(
                         mode = PsWorkModeDto.TEST,
-                        stubCase = PsRequestHouseDelete.StubCase.SUCCESS
+                        stubCase = PsRequestFlatDelete.StubCase.SUCCESS
                     )
                 )
 
@@ -40,22 +40,22 @@ class HouseDeleteValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseDelete)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("house-test-id", res.house?.id)
-                assertEquals("house-test-name", res.house?.name)
+                assertEquals("flat-test-id", res.flat?.id)
+                assertEquals("flat-test-name", res.flat?.name)
             }
         }
     }
 
     @Test
-    fun `empty house id must fail`() {
+    fun `empty flat id must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.houseDelete) {
-                val body = PsRequestHouseDelete(
+            handleRequest(HttpMethod.Post, RestEndpoints.flatDelete) {
+                val body = PsRequestFlatDelete(
                     requestId = "test-request-id",
                 )
 
@@ -70,7 +70,7 @@ class HouseDeleteValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseDelete)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
@@ -88,7 +88,7 @@ class HouseDeleteValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.houseDelete) {
+            handleRequest(HttpMethod.Post, RestEndpoints.flatDelete) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -98,7 +98,7 @@ class HouseDeleteValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseDelete)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

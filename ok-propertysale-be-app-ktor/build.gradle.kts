@@ -37,6 +37,7 @@ dependencies {
     val ktorVersion: String by project
     val kotlinVersion: String by project
     val logbackVersion: String by project
+    val serializationVersion: String by project
 
     implementation(project(":ok-propertysale-mp-common"))
     implementation(project(":ok-propertysale-be-common"))
@@ -45,11 +46,13 @@ dependencies {
     implementation(project(":ok-propertysale-be-business-logic"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-websockets:$ktorVersion")
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 

@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.house
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.room
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -8,28 +8,28 @@ import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseListFilterDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomListFilterDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomList
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class HouseListValidationTest {
+class RoomListValidationTest {
 
     @Test
     fun `non-empty list must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.houseList) {
-                val body = PsRequestHouseList(
+            handleRequest(HttpMethod.Post, RestEndpoints.roomList) {
+                val body = PsRequestRoomList(
                     requestId = "test-request-id",
-                    filterData = PsHouseListFilterDto(
+                    filterData = PsRoomListFilterDto(
 
                     ),
-                    debug = PsRequestHouseList.Debug(
+                    debug = PsRequestRoomList.Debug(
                         mode = PsWorkModeDto.TEST,
-                        stubCase = PsRequestHouseList.StubCase.SUCCESS
+                        stubCase = PsRequestRoomList.StubCase.SUCCESS
                     )
                 )
 
@@ -43,12 +43,12 @@ class HouseListValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseList)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomList)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("house-test-name", res.houses?.firstOrNull()?.name)
+                assertEquals("room-test-name", res.rooms?.firstOrNull()?.name)
             }
         }
     }
@@ -56,7 +56,7 @@ class HouseListValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.houseList) {
+            handleRequest(HttpMethod.Post, RestEndpoints.roomList) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -66,7 +66,7 @@ class HouseListValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseList)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomList)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

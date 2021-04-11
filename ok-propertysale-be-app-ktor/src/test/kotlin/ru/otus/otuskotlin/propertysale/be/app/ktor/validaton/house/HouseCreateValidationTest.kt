@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.flat
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.house
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -9,37 +9,33 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.models.PsFlatUpdateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseCreate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class FlatUpdateValidationTest {
+class HouseCreateValidationTest {
 
     @Test
-    fun `non-empty update must success`() {
+    fun `non-empty create must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.flatUpdate) {
-                val body = PsRequestFlatUpdate(
+            handleRequest(HttpMethod.Post, RestEndpoints.houseCreate) {
+                val body = PsRequestHouseCreate(
                     requestId = "test-request-id",
-                    updateData = PsFlatUpdateDto(
-                        id = "flat-test-id",
-                        name = "flat-test-name",
-                        description = "flat-test-description",
-                        floor = 5,
-                        numberOfRooms = 2,
+                    createData = PsHouseCreateDto(
+                        name = "house-test-name",
+                        description = "house-test-description",
+                        area = 150.0,
                         actions = setOf(
-                            PsActionDto("test-action-1"),
-                            PsActionDto("test-action-2"),
-                            PsActionDto("test-action-3")
+                            PsActionDto("test-action-1")
                         )
                     ),
-                    debug = PsRequestFlatUpdate.Debug(
+                    debug = PsRequestHouseCreate.Debug(
                         mode = PsWorkModeDto.TEST,
-                        stubCase = PsRequestFlatUpdate.StubCase.SUCCESS
+                        stubCase = PsRequestHouseCreate.StubCase.SUCCESS
                     )
                 )
 
@@ -53,24 +49,24 @@ class FlatUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatUpdate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("flat-test-id", res.flat?.id)
-                assertEquals("flat-test-name", res.flat?.name)
+                assertEquals("house-test-name", res.house?.name)
             }
         }
     }
 
     @Test
-    fun `empty id or title or description must fail`() {
+    fun `empty title or description must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.flatUpdate) {
-                val body = PsRequestFlatUpdate(
+            handleRequest(HttpMethod.Post, RestEndpoints.houseCreate) {
+                val body = PsRequestHouseCreate(
                     requestId = "test-request-id",
-                    updateData = PsFlatUpdateDto()
+                    createData = PsHouseCreateDto(
+                    )
                 )
 
                 val format = jsonConfig
@@ -84,7 +80,7 @@ class FlatUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatUpdate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
@@ -108,7 +104,7 @@ class FlatUpdateValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.flatUpdate) {
+            handleRequest(HttpMethod.Post, RestEndpoints.houseCreate) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -118,7 +114,7 @@ class FlatUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatUpdate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.room
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.room
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -9,24 +9,23 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomUpdateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomCreate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class RoomUpdateValidationTest {
+class RoomCreateValidationTest {
 
     @Test
-    fun `non-empty update must success`() {
+    fun `non-empty create must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomUpdate) {
-                val body = PsRequestRoomUpdate(
+            handleRequest(HttpMethod.Post, RestEndpoints.roomCreate) {
+                val body = PsRequestRoomCreate(
                     requestId = "test-request-id",
-                    updateData = PsRoomUpdateDto(
-                        id = "room-test-id",
+                    createData = PsRoomCreateDto(
                         name = "room-test-name",
                         description = "room-test-description",
                         length = 7.0,
@@ -36,9 +35,9 @@ class RoomUpdateValidationTest {
                             PsActionDto("test-action-2")
                         )
                     ),
-                    debug = PsRequestRoomUpdate.Debug(
+                    debug = PsRequestRoomCreate.Debug(
                         mode = PsWorkModeDto.TEST,
-                        stubCase = PsRequestRoomUpdate.StubCase.SUCCESS
+                        stubCase = PsRequestRoomCreate.StubCase.SUCCESS
                     )
                 )
 
@@ -52,24 +51,24 @@ class RoomUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomUpdate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("room-test-id", res.room?.id)
                 assertEquals("room-test-name", res.room?.name)
             }
         }
     }
 
     @Test
-    fun `empty id or title or description must fail`() {
+    fun `empty title or description must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomUpdate) {
-                val body = PsRequestRoomUpdate(
+            handleRequest(HttpMethod.Post, RestEndpoints.roomCreate) {
+                val body = PsRequestRoomCreate(
                     requestId = "test-request-id",
-                    updateData = PsRoomUpdateDto()
+                    createData = PsRoomCreateDto(
+                    )
                 )
 
                 val format = jsonConfig
@@ -83,7 +82,7 @@ class RoomUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomUpdate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
@@ -107,7 +106,7 @@ class RoomUpdateValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomUpdate) {
+            handleRequest(HttpMethod.Post, RestEndpoints.roomCreate) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -117,7 +116,7 @@ class RoomUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomUpdate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.flat
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.flat
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
