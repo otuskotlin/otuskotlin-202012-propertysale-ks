@@ -11,6 +11,8 @@ import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseModel
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomFilterModel
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomIdModel
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomModel
+import ru.otus.otuskotlin.propertysale.be.common.repositories.EmptyUserSession
+import ru.otus.otuskotlin.propertysale.be.common.repositories.IUserSession
 import java.time.Instant
 
 data class BePsContext(
@@ -21,6 +23,8 @@ data class BePsContext(
     var errors: MutableList<IPsError> = mutableListOf(),
     var frameworkErrors: MutableList<Throwable> = mutableListOf(),
     var stubCase: PsStubCase = PsStubCase.NONE,
+
+    val userSession: IUserSession<*> = EmptyUserSession,
 
     var requestFlatId: BePsFlatIdModel = BePsFlatIdModel.NONE,
     var requestFlat: BePsFlatModel = BePsFlatModel.NONE,

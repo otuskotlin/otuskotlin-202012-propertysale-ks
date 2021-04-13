@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.room
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.flat
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -9,35 +9,36 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.models.PsFlatCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatCreate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class RoomCreateValidationTest {
+class FlatCreateValidationTest {
 
     @Test
     fun `non-empty create must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomCreate) {
-                val body = PsRequestRoomCreate(
+            handleRequest(HttpMethod.Post, RestEndpoints.flatCreate) {
+                val body = PsRequestFlatCreate(
                     requestId = "test-request-id",
-                    createData = PsRoomCreateDto(
-                        name = "room-test-name",
-                        description = "room-test-description",
-                        length = 7.0,
-                        width = 5.0,
+                    createData = PsFlatCreateDto(
+                        name = "flat-test-name",
+                        description = "flat-test-description",
+                        floor = 5,
+                        numberOfRooms = 2,
                         actions = setOf(
                             PsActionDto("test-action-1"),
-                            PsActionDto("test-action-2")
+                            PsActionDto("test-action-2"),
+                            PsActionDto("test-action-3")
                         )
                     ),
-                    debug = PsRequestRoomCreate.Debug(
+                    debug = PsRequestFlatCreate.Debug(
                         mode = PsWorkModeDto.TEST,
-                        stubCase = PsRequestRoomCreate.StubCase.SUCCESS
+                        stubCase = PsRequestFlatCreate.StubCase.SUCCESS
                     )
                 )
 
@@ -51,12 +52,12 @@ class RoomCreateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("room-test-name", res.room?.name)
+                assertEquals("flat-test-name", res.flat?.name)
             }
         }
     }
@@ -64,10 +65,10 @@ class RoomCreateValidationTest {
     @Test
     fun `empty title or description must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomCreate) {
-                val body = PsRequestRoomCreate(
+            handleRequest(HttpMethod.Post, RestEndpoints.flatCreate) {
+                val body = PsRequestFlatCreate(
                     requestId = "test-request-id",
-                    createData = PsRoomCreateDto(
+                    createData = PsFlatCreateDto(
                     )
                 )
 
@@ -82,7 +83,7 @@ class RoomCreateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
@@ -106,7 +107,7 @@ class RoomCreateValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomCreate) {
+            handleRequest(HttpMethod.Post, RestEndpoints.flatCreate) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -116,7 +117,7 @@ class RoomCreateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomCreate)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseFlatCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

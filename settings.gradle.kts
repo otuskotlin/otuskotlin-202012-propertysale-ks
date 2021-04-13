@@ -27,14 +27,21 @@ pluginManagement {
 rootProject.name = "otuskotlin-202012-propertysale-ks"
 
 include(
+    // Приложения
     "ok-propertysale-be-app-kotless",
     "ok-propertysale-be-app-ktor",
     "ok-propertysale-be-app-spring",
     "ok-propertysale-be-app-spring-fu",
+
+    // Бэкенд (JVM) подпроекты
     "ok-propertysale-be-business-logic",
     "ok-propertysale-be-common",
     "ok-propertysale-be-mappers-ps",
+
+    // Фронтенд подпроекты
     "ok-propertysale-fe-common",
+
+    // Мультиплатформенные подпроекты
     "ok-propertysale-mp-common",
     "ok-propertysale-mp-pipelines",
     "ok-propertysale-mp-pipelines-validation",

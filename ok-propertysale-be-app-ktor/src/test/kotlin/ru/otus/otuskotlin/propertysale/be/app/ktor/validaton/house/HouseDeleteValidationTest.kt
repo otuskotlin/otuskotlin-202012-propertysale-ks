@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.propertysale.be.app.ktor.room
+package ru.otus.otuskotlin.propertysale.be.app.ktor.validaton.house
 
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -6,29 +6,32 @@ import ru.otus.otuskotlin.propertysale.be.app.ktor.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.app.ktor.module
 import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseDelete
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class RoomReadValidationTest {
+class HouseDeleteValidationTest {
 
     @Test
-    fun `non-empty roomId must success`() {
+    fun `non-empty delete must success`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomRead) {
-                val body = PsRequestRoomRead(
+            handleRequest(HttpMethod.Post, RestEndpoints.houseDelete) {
+                val body = PsRequestHouseDelete(
                     requestId = "test-request-id",
-                    roomId = "test-room-id",
-                    debug = PsRequestRoomRead.Debug(stubCase = PsRequestRoomRead.StubCase.SUCCESS)
+                    houseId = "test-house-id",
+                    debug = PsRequestHouseDelete.Debug(
+                        mode = PsWorkModeDto.TEST,
+                        stubCase = PsRequestHouseDelete.StubCase.SUCCESS
+                    )
                 )
 
-                val format = jsonConfig
-
-                val bodyString = format.encodeToString(PsMessage.serializer(), body)
+                val bodyString = jsonConfig.encodeToString(PsMessage.serializer(), body)
+                println("REQUEST JSON: $bodyString")
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
             }.apply {
@@ -37,23 +40,23 @@ class RoomReadValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomRead)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("test-request-id", res.onRequest)
-                assertEquals("room-test-name", res.room?.name)
+                assertEquals("house-test-id", res.house?.id)
+                assertEquals("house-test-name", res.house?.name)
             }
         }
     }
 
     @Test
-    fun `empty roomId must fail`() {
+    fun `empty house id must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomRead) {
-                val body = PsRequestRoomRead(
+            handleRequest(HttpMethod.Post, RestEndpoints.houseDelete) {
+                val body = PsRequestHouseDelete(
                     requestId = "test-request-id",
-                    roomId = "",
                 )
 
                 val format = jsonConfig
@@ -67,11 +70,17 @@ class RoomReadValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomRead)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
                 assertEquals("test-request-id", res.onRequest)
+                assertTrue("errors: ${res.errors}") {
+                    res.errors?.firstOrNull {
+                        it.message?.toLowerCase()?.contains("id") == true
+                            && it.message?.toLowerCase()?.contains("empty") == true
+                    } != null
+                }
             }
         }
     }
@@ -79,7 +88,7 @@ class RoomReadValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Post, RestEndpoints.roomRead) {
+            handleRequest(HttpMethod.Post, RestEndpoints.houseDelete) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -89,7 +98,7 @@ class RoomReadValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseRoomRead)
+                val res = (jsonConfig.decodeFromString(PsMessage.serializer(), jsonString) as? PsResponseHouseDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

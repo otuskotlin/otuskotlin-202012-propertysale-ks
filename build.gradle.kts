@@ -19,6 +19,7 @@ allprojects {
         jcenter()
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
         maven { url = uri("https://repo.spring.io/milestone") }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
@@ -37,7 +38,7 @@ subprojects {
     tasks {
         withType<KotlinCompile> {
             kotlinOptions {
-                freeCompilerArgs = listOf("-Xjsr305=strict")
+                freeCompilerArgs = listOf("-Xjsr305=strict","-Xopt-in=kotlin.RequiresOptIn")
                 jvmTarget = javaVersion
             }
         }
