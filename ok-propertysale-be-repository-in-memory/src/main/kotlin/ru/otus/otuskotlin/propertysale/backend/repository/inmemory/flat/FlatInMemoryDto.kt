@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.inmemory.flat
+package ru.otus.otuskotlin.propertysale.backend.repository.inmemory.flat
 
 import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
 import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatIdModel

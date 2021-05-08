@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.inmemory.room
+package ru.otus.otuskotlin.propertysale.backend.repository.inmemory.room
 
 import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomIdModel

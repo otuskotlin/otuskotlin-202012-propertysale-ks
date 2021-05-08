@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.inmemory.room
+package ru.otus.otuskotlin.propertysale.backend.repository.inmemory.room
 
 import org.cache2k.Cache
 import org.cache2k.Cache2kBuilder

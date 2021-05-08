@@ -1,7 +1,7 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.inmemory
+package ru.otus.otuskotlin.propertysale.backend.repository.inmemory
 
 import kotlinx.coroutines.runBlocking
-import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.flat.FlatRepoInMemory
+import ru.otus.otuskotlin.propertysale.backend.repository.inmemory.flat.FlatRepoInMemory
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
 import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatModel
