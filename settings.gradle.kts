@@ -37,6 +37,8 @@ include(
     "ok-propertysale-be-business-logic",
     "ok-propertysale-be-common",
     "ok-propertysale-be-mappers-ps",
+    "ok-propertysale-be-repository-in-memory",
+    "ok-propertysale-be-repository-cassandra",
 
     // Фронтенд подпроекты
     "ok-propertysale-fe-common",
