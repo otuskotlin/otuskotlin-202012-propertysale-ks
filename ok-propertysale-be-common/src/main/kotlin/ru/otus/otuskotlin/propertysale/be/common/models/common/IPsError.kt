@@ -9,7 +9,8 @@ interface IPsError {
 
     enum class Group(val alias: String) {
         NONE(""),
-        SERVER("internal-server")
+        SERVER("internal-server"),
+        AUTH("auth"),
     }
 
     enum class Level(val weight: Int) {

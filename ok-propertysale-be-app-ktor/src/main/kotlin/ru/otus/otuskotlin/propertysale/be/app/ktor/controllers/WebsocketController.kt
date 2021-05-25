@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.propertysale.be.app.ktor.controllers
 
+import io.ktor.application.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
@@ -21,6 +22,18 @@ import java.time.Instant
 import java.util.*
 
 private val sessions = mutableMapOf<WebSocketSession, WsUserSession>()
+
+fun Application.websocketEndpoints(
+    flatService: FlatService,
+    houseService: HouseService,
+    roomService: RoomService,
+) {
+    install(WebSockets)
+
+    routing {
+        mpWebsocket(flatService, houseService, roomService)
+    }
+}
 
 @OptIn(InternalSerializationApi::class)
 fun Routing.mpWebsocket(

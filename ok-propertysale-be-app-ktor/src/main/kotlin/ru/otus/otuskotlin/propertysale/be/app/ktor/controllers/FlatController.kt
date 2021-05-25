@@ -15,7 +15,7 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponse
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatRead
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatUpdate
 
-fun Routing.flatRouting(service: FlatService) {
+fun Routing.flatRouting(service: FlatService, authOff: Boolean = false) {
     post(RestEndpoints.flatList) {
         handleRoute<PsRequestFlatList, PsResponseFlatList> { query ->
             service.list(this, query)

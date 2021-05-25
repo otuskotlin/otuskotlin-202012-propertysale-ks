@@ -15,7 +15,7 @@ import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsRespons
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseRead
 import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseUpdate
 
-fun Routing.houseRouting(service: HouseService) {
+fun Routing.houseRouting(service: HouseService, authOff: Boolean = false) {
     post(RestEndpoints.houseList) {
         handleRoute<PsRequestHouseList, PsResponseHouseList> { query ->
             service.list(this, query)

@@ -12,12 +12,14 @@ import ru.otus.otuskotlin.propertysale.be.common.repositories.IRoomRepository
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 class RoomRepoInMemory @OptIn(ExperimentalTime::class) constructor(
-    ttl: Duration,
+    ttl: Duration = 30.toDuration(DurationUnit.SECONDS),
     initObjects: Collection<BePsRoomModel> = emptyList()
-): IRoomRepository {
+) : IRoomRepository {
     @OptIn(ExperimentalTime::class)
     private var cache: Cache<String, RoomInMemoryDto> = object : Cache2kBuilder<String, RoomInMemoryDto>() {}
         .expireAfterWrite(ttl.toLongMilliseconds(), TimeUnit.MILLISECONDS) // expire/refresh after 5 minutes
@@ -32,7 +34,7 @@ class RoomRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     override suspend fun read(context: BePsContext): BePsRoomModel {
         val id = context.requestRoomId
         if (id == BePsRoomIdModel.NONE) throw PsRepoWrongIdException(id.id)
-        val model = cache.get(id.id)?.toModel()?: throw PsRepoNotFoundException(id.id)
+        val model = cache.get(id.id)?.toModel() ?: throw PsRepoNotFoundException(id.id)
         context.responseRoom = model
         return model
     }
@@ -54,7 +56,7 @@ class RoomRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     override suspend fun delete(context: BePsContext): BePsRoomModel {
         val id = context.requestRoomId
         if (id == BePsRoomIdModel.NONE) throw PsRepoWrongIdException(id.id)
-        val model = cache.peekAndRemove(id.id)?.toModel()?: throw PsRepoNotFoundException(id.id)
+        val model = cache.peekAndRemove(id.id)?.toModel() ?: throw PsRepoNotFoundException(id.id)
         context.responseRoom = model
         return model
     }
@@ -63,7 +65,7 @@ class RoomRepoInMemory @OptIn(ExperimentalTime::class) constructor(
         val textFilter = context.roomFilter.text
         if (textFilter.length < 3) throw PsRepoIndexException(textFilter)
         val records = cache.asMap().filterValues {
-            it.name?.contains(textFilter, true)?:false || if (context.roomFilter.includeDescription) {
+            it.name?.contains(textFilter, true) ?: false || if (context.roomFilter.includeDescription) {
                 it.description?.contains(textFilter, true) ?: false
             } else false
         }.values

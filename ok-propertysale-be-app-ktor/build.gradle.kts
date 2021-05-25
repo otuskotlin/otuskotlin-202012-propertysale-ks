@@ -47,6 +47,8 @@ dependencies {
     implementation(project(":ok-propertysale-mp-transport-ps"))
     implementation(project(":ok-propertysale-be-mappers-ps"))
     implementation(project(":ok-propertysale-be-business-logic"))
+    implementation(project(":ok-propertysale-be-repository-cassandra"))
+    implementation(project(":ok-propertysale-be-repository-in-memory"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
@@ -56,6 +58,8 @@ dependencies {
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-websockets:$ktorVersion")
+    implementation("io.ktor:ktor-auth:$ktorVersion")
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
 
     implementation("com.github.JUtupe:ktor-rabbitmq:$ktorRabbitmqFeature")
     implementation("com.rabbitmq:amqp-client:$rabbitmqVersion")
