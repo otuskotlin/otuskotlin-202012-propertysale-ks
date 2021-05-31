@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import ru.otus.otuskotlin.propertysale.be.business.logic.pipelines.house.HouseRead
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
+import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
 import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseIdModel
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,7 +15,9 @@ internal class HouseReadValidation {
     @Test
     fun `houseId success non-empty`() {
         val ctx = BePsContext(
-            requestHouseId = BePsHouseIdModel("test-house-id")
+            requestHouseId = BePsHouseIdModel("test-house-id"),
+            stubCase = PsStubCase.HOUSE_READ_SUCCESS,
+            useAuth = false
         )
 
         runBlocking {
@@ -27,7 +30,8 @@ internal class HouseReadValidation {
     @Test
     fun `houseId fails empty`() {
         val ctx = BePsContext(
-            requestHouseId = BePsHouseIdModel("")
+            requestHouseId = BePsHouseIdModel(""),
+            useAuth = false,
         )
 
         runBlocking {

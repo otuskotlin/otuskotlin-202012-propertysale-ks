@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.propertysale.be.common.context
 
 import ru.otus.otuskotlin.propertysale.be.common.models.common.IPsError
+import ru.otus.otuskotlin.propertysale.be.common.models.common.PsPrincipalModel
 import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
 import ru.otus.otuskotlin.propertysale.be.common.models.common.PsWorkMode
 import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatFilterModel
@@ -20,6 +21,10 @@ import ru.otus.otuskotlin.propertysale.be.common.repositories.IUserSession
 import java.time.Instant
 
 data class BePsContext(
+    var principal: PsPrincipalModel = PsPrincipalModel.NONE,
+    var useAuth: Boolean = true,
+    val permissions: MutableSet<PsPermission> = mutableSetOf(),
+
     var timeStarted: Instant = Instant.MIN,
     var responseId: String = "",
     var onRequest: String = "",
