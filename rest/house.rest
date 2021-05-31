@@ -1,17 +1,27 @@
 POST http://{{url}}/house/list
 Content-Type: application/json
 
-{}
+{
+  "type": "PsRequestHouseList",
+  "debug": {
+    "stubCase": "SUCCESS"
+  }
+}
 
 ###
 POST http://{{url}}/house/create
 Content-Type: application/json
 
 {
+  "type": "PsRequestHouseCreate",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "createData": {
     "name": "Test House",
     "description": "Test House Description",
-    "area": 150.0
+    "floor": 5,
+    "numberOfRooms": 2
   }
 }
 
@@ -20,6 +30,10 @@ POST http://{{url}}/house/read
 Content-Type: application/json
 
 {
+  "type": "PsRequestHouseRead",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "houseId": "test-house-id"
 }
 
@@ -28,11 +42,16 @@ POST http://{{url}}/house/update
 Content-Type: application/json
 
 {
+  "type": "PsRequestHouseUpdate",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "updateData": {
     "id": "test-house-id",
     "name": "Test House updated",
     "description": "Test House Description updated",
-    "area": 150.0
+    "floor": 3,
+    "numberOfRooms": 1
   }
 }
 
@@ -41,6 +60,10 @@ POST http://{{url}}/house/delete
 Content-Type: application/json
 
 {
+  "type": "PsRequestHouseDelete",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "houseId": "test-house-id"
 }
 

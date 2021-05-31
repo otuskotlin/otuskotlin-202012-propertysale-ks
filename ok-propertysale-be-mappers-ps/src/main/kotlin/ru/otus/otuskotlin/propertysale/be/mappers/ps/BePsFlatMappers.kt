@@ -6,19 +6,19 @@ import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
 import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatFilterModel
 import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatIdModel
 import ru.otus.otuskotlin.propertysale.be.common.models.flat.BePsFlatModel
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.PsFlatDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.models.PsFlatCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.models.PsFlatUpdateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.PsFlatDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.models.PsFlatCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.models.PsFlatUpdateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatUpdate
 import java.time.Instant
 
 fun BePsContext.setQuery(query: PsRequestFlatRead) = setQuery(query) {
@@ -128,7 +128,7 @@ private fun PsFlatCreateDto.toModel() = BePsFlatModel(
     actions = actions?.map { it.toModel() }?.toMutableSet() ?: mutableSetOf()
 )
 
-private fun BePsFlatModel.toTransport() = PsFlatDto(
+internal fun BePsFlatModel.toTransport() = PsFlatDto(
     id = id.id.takeIf { it.isNotBlank() },
     name = name.takeIf { it.isNotBlank() },
     description = description.takeIf { it.isNotBlank() },

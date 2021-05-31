@@ -1,13 +1,22 @@
 POST http://{{url}}/flat/list
 Content-Type: application/json
 
-{}
+{
+  "type": "PsRequestFlatList",
+  "debug": {
+    "stubCase": "SUCCESS"
+  }
+}
 
 ###
 POST http://{{url}}/flat/create
 Content-Type: application/json
 
 {
+  "type": "PsRequestFlatCreate",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "createData": {
     "name": "Test Flat",
     "description": "Test Flat Description",
@@ -21,6 +30,10 @@ POST http://{{url}}/flat/read
 Content-Type: application/json
 
 {
+  "type": "PsRequestFlatRead",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "flatId": "test-flat-id"
 }
 
@@ -29,6 +42,10 @@ POST http://{{url}}/flat/update
 Content-Type: application/json
 
 {
+  "type": "PsRequestFlatUpdate",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "updateData": {
     "id": "test-flat-id",
     "name": "Test Flat updated",
@@ -43,6 +60,10 @@ POST http://{{url}}/flat/delete
 Content-Type: application/json
 
 {
+  "type": "PsRequestFlatDelete",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "flatId": "test-flat-id"
 }
 

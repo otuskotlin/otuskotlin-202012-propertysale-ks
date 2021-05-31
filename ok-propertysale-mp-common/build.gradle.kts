@@ -5,6 +5,10 @@ plugins {
 group = rootProject.group
 version = rootProject.version
 
+repositories {
+    mavenCentral()
+}
+
 kotlin {
     js {
         browser { }
@@ -31,6 +35,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-js"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutinesVersion")
             }
         }
         val jsTest by getting {
@@ -42,6 +47,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutinesVersion")
             }
         }
         val jvmTest by getting {

@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":ok-propertysale-be-business-logic"))
     implementation(project(":ok-propertysale-be-repository-cassandra"))
     implementation(project(":ok-propertysale-be-repository-in-memory"))
+    implementation(project(":ok-propertysale-be-logging"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")

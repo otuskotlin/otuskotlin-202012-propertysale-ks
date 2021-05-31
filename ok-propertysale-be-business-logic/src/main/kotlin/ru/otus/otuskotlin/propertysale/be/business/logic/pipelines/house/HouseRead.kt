@@ -86,7 +86,7 @@ object HouseRead : IOperation<BePsContext> by pipeline({
         }
     }
     operation {
-//        startIf { status == MpBeContextStatus.RUNNING && responseDemand.visibility == PUBLIC }
+//        startIf { status == BePsContextStatus.RUNNING && responseHouse.visibility == PUBLIC }
         execute {
             permissions += PsPermission.READ
         }

@@ -1,3 +1,9 @@
 .idea
 **/build/
 .gradle
+src/commonMain/resources/
+src/commonTest/resources/
+src/jsMain/
+src/jsTest/
+src/jvmMain/
+src/jvmTest/

@@ -6,19 +6,19 @@ import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
 import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseFilterModel
 import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseIdModel
 import ru.otus.otuskotlin.propertysale.be.common.models.house.BePsHouseModel
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.PsHouseDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseUpdateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.PsHouseDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.models.PsHouseCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.models.PsHouseUpdateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseUpdate
 import java.time.Instant
 
 fun BePsContext.setQuery(query: PsRequestHouseRead) = setQuery(query) {
@@ -126,7 +126,7 @@ private fun PsHouseCreateDto.toModel() = BePsHouseModel(
     actions = actions?.map { it.toModel() }?.toMutableSet() ?: mutableSetOf()
 )
 
-private fun BePsHouseModel.toTransport() = PsHouseDto(
+internal fun BePsHouseModel.toTransport() = PsHouseDto(
     id = id.id.takeIf { it.isNotBlank() },
     name = name.takeIf { it.isNotBlank() },
     description = description.takeIf { it.isNotBlank() },

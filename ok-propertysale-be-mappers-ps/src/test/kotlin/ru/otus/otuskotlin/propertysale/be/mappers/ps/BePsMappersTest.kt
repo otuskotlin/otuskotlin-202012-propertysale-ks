@@ -3,24 +3,23 @@ package ru.otus.otuskotlin.propertysale.be.mappers.ps
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.IPsRequest
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.models.PsFlatCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.models.PsActionDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.models.PsFlatCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.models.PsHouseCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.models.PsRoomCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomRead
 
 
 internal class BePsMappersTest {
 
     @Test
     fun flatRequestIdMappingTest() {
-        val request: IPsRequest = PsRequestFlatRead(
+        val request = PsRequestFlatRead(
             flatId = "flat-test-id"
         )
         val context = BePsContext()
@@ -32,7 +31,7 @@ internal class BePsMappersTest {
 
     @Test
     fun requestFlatCreateMappingTest() {
-        val request: IPsRequest = PsRequestFlatCreate(
+        val request = PsRequestFlatCreate(
             createData = PsFlatCreateDto(
                 name = "flat-test-name",
                 description = "flat-test-description",
@@ -56,7 +55,7 @@ internal class BePsMappersTest {
 
     @Test
     fun houseRequestIdMappingTest() {
-        val request: IPsRequest = PsRequestHouseRead(
+        val request = PsRequestHouseRead(
             houseId = "house-test-id"
         )
         val context = BePsContext()
@@ -68,7 +67,7 @@ internal class BePsMappersTest {
 
     @Test
     fun requestHouseCreateMappingTest() {
-        val request: IPsRequest = PsRequestHouseCreate(
+        val request = PsRequestHouseCreate(
             createData = PsHouseCreateDto(
                 name = "house-test-name",
                 description = "house-test-description",
@@ -90,7 +89,7 @@ internal class BePsMappersTest {
 
     @Test
     fun roomRequestIdMappingTest() {
-        val request: IPsRequest = PsRequestRoomRead(
+        val request = PsRequestRoomRead(
             roomId = "room-test-id"
         )
         val context = BePsContext()
@@ -102,7 +101,7 @@ internal class BePsMappersTest {
 
     @Test
     fun requestRoomCreateMappingTest() {
-        val request: IPsRequest = PsRequestRoomCreate(
+        val request = PsRequestRoomCreate(
             createData = PsRoomCreateDto(
                 name = "room-test-name",
                 description = "room-test-description",

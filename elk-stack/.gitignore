@@ -1,0 +1,7 @@
+/kfdata/*
+!/kfdata/.gitkeep
+
+/esdata/*
+!/esdata/.gitkeep
+
+/tmp

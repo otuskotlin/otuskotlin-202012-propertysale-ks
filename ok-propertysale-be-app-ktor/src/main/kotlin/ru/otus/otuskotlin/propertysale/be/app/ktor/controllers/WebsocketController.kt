@@ -17,7 +17,7 @@ import ru.otus.otuskotlin.propertysale.be.app.ktor.utils.toModel
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
 import ru.otus.otuskotlin.propertysale.be.common.repositories.EmptyUserSession
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.PsMessage
 import java.time.Instant
 import java.util.*
 

@@ -86,7 +86,7 @@ object FlatRead : IOperation<BePsContext> by pipeline({
         }
     }
     operation {
-//        startIf { status == MpBeContextStatus.RUNNING && responseDemand.visibility == PUBLIC }
+//        startIf { status == BePsContextStatus.RUNNING && responseFlat.visibility == PUBLIC }
         execute {
             permissions += PsPermission.READ
         }
