@@ -9,17 +9,17 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.models.PsHouseUpdateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.models.PsHouseCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.models.PsHouseUpdateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseRead
 
 @WebFluxTest
 internal class HouseControllerTest(@Autowired val client: WebTestClient) {

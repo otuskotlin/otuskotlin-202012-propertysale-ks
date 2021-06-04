@@ -1,18 +1,27 @@
 POST http://{{url}}/room/list
 Content-Type: application/json
 
-{}
+{
+  "type": "PsRequestRoomList",
+  "debug": {
+    "stubCase": "SUCCESS"
+  }
+}
 
 ###
 POST http://{{url}}/room/create
 Content-Type: application/json
 
 {
+  "type": "PsRequestRoomCreate",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "createData": {
     "name": "Test Room",
     "description": "Test Room Description",
-    "length": 7.0,
-    "width": 5.0
+    "floor": 5,
+    "numberOfRooms": 2
   }
 }
 
@@ -21,6 +30,10 @@ POST http://{{url}}/room/read
 Content-Type: application/json
 
 {
+  "type": "PsRequestRoomRead",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "roomId": "test-room-id"
 }
 
@@ -29,12 +42,16 @@ POST http://{{url}}/room/update
 Content-Type: application/json
 
 {
+  "type": "PsRequestRoomUpdate",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "updateData": {
     "id": "test-room-id",
     "name": "Test Room updated",
     "description": "Test Room Description updated",
-    "length": 7.0,
-    "width": 5.0
+    "floor": 3,
+    "numberOfRooms": 1
   }
 }
 
@@ -43,6 +60,10 @@ POST http://{{url}}/room/delete
 Content-Type: application/json
 
 {
+  "type": "PsRequestRoomDelete",
+  "debug": {
+    "stubCase": "SUCCESS"
+  },
   "roomId": "test-room-id"
 }
 

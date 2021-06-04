@@ -10,25 +10,30 @@ import kotlinx.serialization.serializer
 import ru.otus.otuskotlin.propertysale.be.app.ktor.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.IPsRequest
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.be.logging.PsLogContext
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.IPsRequest
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.PsMessage
 import java.time.Instant
 import java.util.*
 
 @OptIn(InternalSerializationApi::class)
 suspend inline fun <reified T : IPsRequest, reified U : PsMessage> PipelineContext<Unit, ApplicationCall>.handleRoute(
-    block: suspend BePsContext.(T?) -> U
+    logId: String,
+    logger: PsLogContext,
+    crossinline block: suspend BePsContext.(T?) -> U
 ) {
     val ctx = BePsContext(
-        responseId = UUID.randomUUID().toString(),
-        timeStarted = Instant.now()
+        timeStarted = Instant.now(),
+        responseId = UUID.randomUUID().toString()
     )
     try {
-        val query = call.receive<PsMessage>() as T
-        ctx.status = BePsContextStatus.RUNNING
-        val response = ctx.block(query)
-        val respJson = jsonConfig.encodeToString(PsMessage::class.serializer(), response)
-        call.respondText(respJson, contentType = ContentType.parse("application/json"))
+        logger.doWithLoggingSusp(logId) {
+            val query = call.receive<PsMessage>() as T
+            ctx.status = BePsContextStatus.RUNNING
+            val response = ctx.block(query)
+            val respJson = jsonConfig.encodeToString(PsMessage::class.serializer(), response)
+            call.respondText(respJson, contentType = ContentType.parse("application/json"))
+        }
     } catch (e: Throwable) {
         ctx.status = BePsContextStatus.FAILING
         ctx.errors.add(e.toModel())

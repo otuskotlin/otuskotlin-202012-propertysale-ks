@@ -9,7 +9,7 @@ import org.springframework.web.servlet.function.body
 import ru.otus.otuskotlin.propertysale.be.app.spring.fu.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContext
 import ru.otus.otuskotlin.propertysale.be.common.context.BePsContextStatus
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.PsMessage
 import java.time.Instant
 import java.util.*
 

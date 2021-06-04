@@ -5,11 +5,11 @@ import io.ktor.server.testing.*
 import ru.otus.otuskotlin.propertysale.be.app.ktor.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.app.ktor.module
 import ru.otus.otuskotlin.propertysale.mp.common.RestEndpoints
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsWorkModeDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.PsWorkModeDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.ResponseStatusDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatDelete
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

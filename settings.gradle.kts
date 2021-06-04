@@ -6,21 +6,22 @@ pluginManagement {
         val bmuschkoVersion: String by settings
         val kotlessVersion: String by settings
 
-        kotlin("multiplatform") version kotlinVersion apply false
-        kotlin("jvm") version kotlinVersion apply false
-        kotlin("js") version kotlinVersion apply false
+        kotlin("multiplatform") version kotlinVersion
+        kotlin("jvm") version kotlinVersion
+        kotlin("js") version kotlinVersion
+        kotlin("kapt") version kotlinVersion
 
-        kotlin("plugin.serialization") version kotlinVersion apply false
+        kotlin("plugin.serialization") version kotlinVersion
 
-        kotlin("plugin.spring") version kotlinVersion apply false
-        kotlin("plugin.allopen") version kotlinVersion apply false
+        kotlin("plugin.spring") version kotlinVersion
+        kotlin("plugin.allopen") version kotlinVersion
 
-        id("org.springframework.boot") version springBootVersion apply false
-        id("io.spring.dependency-management") version springDependencyVersion apply false
+        id("org.springframework.boot") version springBootVersion
+        id("io.spring.dependency-management") version springDependencyVersion
 
-        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+        id("com.bmuschko.docker-java-application") version bmuschkoVersion
 
-        id("io.kotless") version kotlessVersion apply false
+        id("io.kotless") version kotlessVersion
     }
 }
 
@@ -39,6 +40,7 @@ include(
     "ok-propertysale-be-mappers-ps",
     "ok-propertysale-be-repository-in-memory",
     "ok-propertysale-be-repository-cassandra",
+    "ok-propertysale-be-logging",
 
     // Фронтенд подпроекты
     "ok-propertysale-fe-common",

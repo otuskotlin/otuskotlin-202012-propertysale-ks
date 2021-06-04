@@ -8,11 +8,11 @@ import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseList
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseRead
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondHouseUpdate
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.setQuery
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseUpdate
 
 private val crud = HouseCrud()
 

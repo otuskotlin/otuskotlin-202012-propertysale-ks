@@ -4,6 +4,7 @@ plugins {
     kotlin("multiplatform") apply false
     kotlin("jvm") apply false
     kotlin("js") apply false
+    kotlin("kapt") apply false
     idea
 }
 
@@ -17,7 +18,7 @@ allprojects {
         gradlePluginPortal()
         mavenCentral()
         jcenter()
-        maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
+        maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers") }
         maven { url = uri("https://repo.spring.io/milestone") }
         maven { url = uri("https://jitpack.io") }
     }
@@ -35,11 +36,13 @@ subprojects {
 
     val javaVersion: String by project
 
-    tasks {
-        withType<KotlinCompile> {
-            kotlinOptions {
-                freeCompilerArgs = listOf("-Xjsr305=strict","-Xopt-in=kotlin.RequiresOptIn")
-                jvmTarget = javaVersion
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        tasks {
+            withType<KotlinCompile> {
+                kotlinOptions {
+                    freeCompilerArgs = listOf("-Xjsr305=strict", "-Xopt-in=kotlin.RequiresOptIn")
+                    jvmTarget = javaVersion
+                }
             }
         }
     }

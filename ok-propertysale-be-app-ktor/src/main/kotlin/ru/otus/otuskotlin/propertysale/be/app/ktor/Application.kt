@@ -53,10 +53,7 @@ fun Application.module(
 
     val repoProdName by lazy {
         environment.config.propertyOrNull("propertysale.repository.prod")
-            ?.getString()
-            ?.trim()
-            ?.toLowerCase()
-            ?: "inmemory"
+            ?.getString()?.trim()?.toLowerCase() ?: "cassandra"
     }
 
     val flatRepoProd = when (repoProdName) {

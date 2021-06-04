@@ -6,19 +6,19 @@ import ru.otus.otuskotlin.propertysale.be.common.models.common.PsStubCase
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomFilterModel
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomIdModel
 import ru.otus.otuskotlin.propertysale.be.common.models.room.BePsRoomModel
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.PsRoomDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomCreateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.models.PsRoomUpdateDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.responses.PsResponseRoomUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.PsRoomDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.models.PsRoomCreateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.models.PsRoomUpdateDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.responses.PsResponseRoomCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.responses.PsResponseRoomDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.responses.PsResponseRoomList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.responses.PsResponseRoomRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.responses.PsResponseRoomUpdate
 import java.time.Instant
 
 fun BePsContext.setQuery(query: PsRequestRoomRead) = setQuery(query) {
@@ -128,7 +128,7 @@ private fun PsRoomCreateDto.toModel() = BePsRoomModel(
     actions = actions?.map { it.toModel() }?.toMutableSet() ?: mutableSetOf()
 )
 
-private fun BePsRoomModel.toTransport() = PsRoomDto(
+internal fun BePsRoomModel.toTransport() = PsRoomDto(
     id = id.id.takeIf { it.isNotBlank() },
     name = name.takeIf { it.isNotBlank() },
     description = description.takeIf { it.isNotBlank() },

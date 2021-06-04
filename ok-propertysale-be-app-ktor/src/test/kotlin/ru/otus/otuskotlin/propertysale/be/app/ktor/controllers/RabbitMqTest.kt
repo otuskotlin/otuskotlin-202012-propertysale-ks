@@ -11,9 +11,9 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.testcontainers.containers.RabbitMQContainer
 import ru.otus.otuskotlin.propertysale.be.app.ktor.config.jsonConfig
 import ru.otus.otuskotlin.propertysale.be.app.ktor.module
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.PsMessage
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.responses.PsResponseFlatList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.PsMessage
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.responses.PsResponseFlatList
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -90,10 +90,10 @@ internal class RabbitMqTest {
     }
 
     companion object {
-        val queueIn = "mpQueueIn"
-        val queueOut = "mpQueueOut"
-        val exchangeIn = "mpExchangeIn"
-        val exchangeOut = "mpExchangeOut"
+        val queueIn = "psQueueIn"
+        val queueOut = "psQueueOut"
+        val exchangeIn = "psExchangeIn"
+        val exchangeOut = "psExchangeOut"
 
         val container by lazy {
 //            Этот образ предназначен для дебагинга, он содержит панель управления на порту httpPort

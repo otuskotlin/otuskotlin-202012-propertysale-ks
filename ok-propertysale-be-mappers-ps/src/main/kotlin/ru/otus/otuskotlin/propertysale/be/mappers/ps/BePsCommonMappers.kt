@@ -6,10 +6,10 @@ import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionIdModel
 import ru.otus.otuskotlin.propertysale.be.common.models.common.BePsActionModel
 import ru.otus.otuskotlin.propertysale.be.common.models.common.IPsError
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.exceptions.WrongBePsContextStatus
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ErrorDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.IPsRequest
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.models.PsActionDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.ErrorDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.IPsRequest
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.ResponseStatusDto
 
 fun <T : IPsRequest> BePsContext.setQuery(query: T, block: BePsContext.() -> Unit) = apply {
     onRequest = query.requestId ?: ""

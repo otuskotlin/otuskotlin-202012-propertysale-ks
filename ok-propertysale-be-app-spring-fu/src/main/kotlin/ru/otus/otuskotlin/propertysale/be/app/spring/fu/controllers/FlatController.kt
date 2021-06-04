@@ -10,11 +10,11 @@ import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondFlatList
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondFlatRead
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondFlatUpdate
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.setQuery
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.flat.requests.PsRequestFlatUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.flat.requests.PsRequestFlatUpdate
 
 class FlatController(private val crud: FlatCrud) {
     fun list(request: ServerRequest): ServerResponse = handleRoute(request) { query: PsRequestFlatList? ->

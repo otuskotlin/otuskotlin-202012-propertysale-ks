@@ -8,11 +8,11 @@ import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondRoomList
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondRoomRead
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.respondRoomUpdate
 import ru.otus.otuskotlin.propertysale.be.mappers.ps.setQuery
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.room.requests.PsRequestRoomUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.room.requests.PsRequestRoomUpdate
 
 private val crud = RoomCrud()
 

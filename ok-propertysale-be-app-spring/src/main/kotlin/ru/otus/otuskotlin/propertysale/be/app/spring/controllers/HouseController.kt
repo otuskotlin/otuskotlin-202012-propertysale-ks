@@ -4,19 +4,19 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.models.PsActionDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ErrorDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.common.transport.ResponseStatusDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.PsHouseDto
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.requests.PsRequestHouseUpdate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseCreate
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseDelete
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseList
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseRead
-import ru.otus.otuskotlin.propertysale.mp.transport.ps.house.responses.PsResponseHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.models.PsActionDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.ErrorDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.common.transport.ResponseStatusDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.PsHouseDto
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.requests.PsRequestHouseUpdate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseCreate
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseDelete
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseList
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseRead
+import ru.otus.otuskotlin.propertysale.mp.transport.ps.models.house.responses.PsResponseHouseUpdate
 import java.time.Instant
 
 @RestController

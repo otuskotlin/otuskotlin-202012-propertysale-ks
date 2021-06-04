@@ -12,11 +12,11 @@ data class CassandraConfig(
 ) {
     @OptIn(KtorExperimentalAPI::class)
     constructor(environment: ApplicationEnvironment) : this(
-        hosts = environment.config.property("$PATH.hosts").getString(),
-        port = environment.config.property("$PATH.port").getString().toInt(),
-        user = environment.config.property("$PATH.user").getString(),
-        pass = environment.config.property("$PATH.pass").getString(),
-        keyspace = environment.config.property("$PATH.keyspace").getString()
+        hosts = environment.config.propertyOrNull("$PATH.hosts")?.getString() ?: "localhost",
+        port = environment.config.propertyOrNull("$PATH.port")?.getString()?.toInt() ?: 9042,
+        user = environment.config.propertyOrNull("$PATH.user")?.getString() ?: "cassandra",
+        pass = environment.config.propertyOrNull("$PATH.pass")?.getString() ?: "cassandra",
+        keyspace = environment.config.propertyOrNull("$PATH.keyspace")?.getString() ?: "test_keyspace"
     )
 
     companion object {
