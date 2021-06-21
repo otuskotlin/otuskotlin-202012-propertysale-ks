@@ -1,6 +1,11 @@
 version: "3.3"
 services:
 
+  propertysale:
+    image: ok-propertysale-be-app-ktor:0.0.1
+    ports:
+      - "18080:18080"
+
   elasticsearch:
     image: elasticsearch:7.10.1
     volumes:
